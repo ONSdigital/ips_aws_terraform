@@ -1,0 +1,31 @@
+# Terraform state
+.terraform
+terraform.tfstate
+terraform.tfstate.backup
+*.tf.ignore
+
+# Secrets and whatnot
+keys/
+secrets.tfvars
+backend.tf
+
+# IDE nonsense
+.idea
+.vscode
+
+#### OS Temp files ####
+# General
+.swp
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+
+# General Temp, Backup files
+*~
+nohup.out
+*_BACKUP_*
+*_BASE_*
+*_LOCAL_*
+*_REMOTE_*
+
