@@ -28,7 +28,7 @@ variable "cidr_block_all" {
 }
 
 # Mandataory inputs
-variable "bastion_ingress_cidr" {
+variable "bastion_ingress_ip" {
 }
 
 variable "deploy_key_name" {
