@@ -4,6 +4,7 @@ terraform.tfstate
 terraform.tfstate.backup
 *.tf.ignore
 *.tfvars
+*.lock.info
 
 # Secrets and whatnot
 keys/

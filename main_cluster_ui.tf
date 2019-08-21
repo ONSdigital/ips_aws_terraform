@@ -61,7 +61,7 @@ EOF
 
 
 resource "aws_ecs_service" "ui_service" {
-  name            = "ips-ui-tf"
+  name            = "${local.common_name_prefix}-ips_ui_tf"
   cluster         = aws_ecs_cluster.ips_cluster.id
   task_definition = aws_ecs_task_definition.ui_task_def.arn
   desired_count   = 1

@@ -29,7 +29,7 @@ resource "aws_security_group_rule" "ips_lb_sg_egress_all" {
 }
 
 resource "aws_lb" "ips_lb" {
-  name               = "ips-lb-tf-2"
+  name               = "${local.common_name_prefix}-ips-lb-tf"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.ips_lb_sg.id]
@@ -37,7 +37,7 @@ resource "aws_lb" "ips_lb" {
 }
 
 resource "aws_lb_target_group" "ips_tg" {
-  name                 = "ips-tg-tf"
+  name                 = "${local.common_name_prefix}-ips-tg-tf"
   port                 = "5000"
   protocol             = "HTTP"
   target_type          = "ip"
