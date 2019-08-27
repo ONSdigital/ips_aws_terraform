@@ -3,7 +3,7 @@ resource "aws_security_group" "natsg" {
   name        = "${local.common_name_prefix}_NAT-security-group"
   description = "Security Group for the NAT Instance for ${local.common_name_prefix}"
 
- ingress {
+  ingress {
     from_port   = 53
     protocol    = "udp"
     to_port     = 53
@@ -49,11 +49,11 @@ resource "aws_security_group" "natsg" {
     from_port   = 3306
     protocol    = "tcp"
     to_port     = 3306
-    cidr_blocks = ["${concat( aws_subnet.private_subnets.*.cidr_block, aws_subnet.public_subnets.*.cidr_block)}"]
+    cidr_blocks = ["${concat(aws_subnet.private_subnets.*.cidr_block, aws_subnet.public_subnets.*.cidr_block)}"]
   }
 
   tags = "${merge(local.module_common_tags,
-    map("Name" , "${local.common_name_prefix}_NAT-Instance-SG")
+    map("Name", "${local.common_name_prefix}_NAT-Instance-SG")
   )}"
 }
 
@@ -68,6 +68,6 @@ resource "aws_instance" "nat" {
   vpc_security_group_ids = ["${aws_security_group.natsg.id}", "${aws_security_group.public_sg.id}"]
 
   tags = "${merge(local.module_common_tags,
-    map("Name" , "${local.common_name_prefix}_NAT-Instance")
+    map("Name", "${local.common_name_prefix}_NAT-Instance")
   )}"
 }

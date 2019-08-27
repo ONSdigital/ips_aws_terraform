@@ -15,10 +15,10 @@ resource "aws_vpc" "main_vpc" {
 
 resource "aws_default_security_group" "main_vpc_default_sg" {
   vpc_id = "${aws_vpc.main_vpc.id}"
-  tags   = "${merge(local.module_common_tags, map("Name", "${local.common_name_prefix}_Default-SG") )}"
+  tags   = "${merge(local.module_common_tags, map("Name", "${local.common_name_prefix}_Default-SG"))}"
 }
 
 resource "aws_internet_gateway" "igw" {
   vpc_id = "${aws_vpc.main_vpc.id}"
-  tags   = "${merge(local.public_vpc_resource_tags, map("Name", "${local.common_name_prefix}_Internet-Gateway") )}"
+  tags   = "${merge(local.public_vpc_resource_tags, map("Name", "${local.common_name_prefix}_Internet-Gateway"))}"
 }
