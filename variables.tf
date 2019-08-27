@@ -11,7 +11,6 @@
 //  parent_tags = "${merge(module.common_tags.tags, map("Name", "${var.common_name}"))}"
 //}
 
-
 variable "main_address_space" {
   default = "10.0.0.0/16"
 }
@@ -28,10 +27,19 @@ variable "cidr_block_all" {
   default = "0.0.0.0/0"
 }
 
-
 # Mandataory inputs
-variable "bastion_ingress_cidr" {}
-variable "deploy_key_name" {}
-variable "aws_access_key" {}
-variable "aws_secret_key" {}
-variable "common_name" {}
+variable "bastion_ingress_cidr" {
+}
+
+variable "deploy_key_name" {
+}
+
+variable "aws_access_key" {
+}
+
+variable "aws_secret_key" {
+}
+
+variable "common_name" {
+}
+

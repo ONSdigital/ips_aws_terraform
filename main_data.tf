@@ -14,4 +14,6 @@ data "aws_ami" "nat_instance_ami" {
   }
 }
 
-data "aws_availability_zones" "available" {}
+data "aws_availability_zones" "available" {
+}
+
