@@ -11,14 +11,15 @@ resource "aws_security_group" "ips_lb_sg" {
   ingress {
     from_port = 80
     protocol  = "tcp"
-    to_port   = 0
-    //    cidr_blocks = ["80.5.92.42/32"]
+    to_port   = 80
+    cidr_blocks = [local.bastion_ingress_cidr]
   }
 
   egress {
     from_port = 0
     protocol  = -1
     to_port   = 0
+    security_groups = [aws_security_group.ui_sg.id]
   }
 }
 
