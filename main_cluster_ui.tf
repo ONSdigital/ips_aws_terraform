@@ -91,19 +91,25 @@ resource "aws_security_group" "ui_sg" {
       "Name" = "${local.common_name_prefix}_ui_tf"
     },
   )
+}
 
-  ingress {
-    from_port       = 0
-    protocol        = -1
-    to_port         = 0
-    security_groups = [aws_security_group.ips_lb_sg.id]
-  }
+resource "aws_security_group_rule" "ui_sg_ingress_from_lb" {
+  from_port = 0
+  protocol = -1
+  to_port = 0
+  type = "ingress"
+  source_security_group_id = aws_security_group.ips_lb_sg.id
 
-  egress {
-    from_port = 0
-    protocol  = -1
-    to_port   = 0
-    cidr_blocks = [var.cidr_block_all]
-  }
+  security_group_id = aws_security_group.ui_sg.id
+}
+
+resource "aws_security_group_rule" "ui_sg_egress_all" {
+  from_port = 0
+  protocol = -1
+  to_port = 0
+  type = "egress"
+  cidr_blocks = [var.cidr_block_all]
+
+  security_group_id = aws_security_group.ui_sg.id
 }
 
