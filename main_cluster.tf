@@ -152,6 +152,7 @@ resource "aws_security_group" "ui_sg" {
     from_port = 0
     protocol  = -1
     to_port   = 0
+    cidr_blocks = [var.cidr_block_all]
   }
 }
 
