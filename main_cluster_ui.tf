@@ -7,60 +7,7 @@ resource "aws_ecs_task_definition" "ui_task_def" {
   cpu                      = "512"
   task_role_arn            = "ecsTaskExecutionRole"
   execution_role_arn       = "ecsTaskExecutionRole"
-  container_definitions    = <<EOF
-[
-  {
-    "name": "ips-ui-tf",
-    "image": "014669633018.dkr.ecr.eu-west-2.amazonaws.com/ips-ui:latest",
-    "memory": null,
-    "memoryReservation": null,
-    "essential": true,
-    "logConfiguration":
-    {
-       "logDriver": "awslogs",
-       "secretOptions": null,
-       "options": {
-         "awslogs-group": "/ecs/ips-services",
-         "awslogs-region": "eu-west-2",
-         "awslogs-stream-prefix": "ecs"
-        }
-    },
-    "environment": [
-        {
-          "name": "API_PORT",
-          "value": "5000"
-        },
-        {
-          "name": "API_PROTOCOL",
-          "value": "http"
-        },
-        {
-          "name": "FLASK_APP",
-          "value": "ips"
-        },
-        {
-          "name": "FLASK_ENV",
-          "value": "development"
-        },
-        {
-          "name": "UI_FLASK_APP",
-          "value": "ips"
-        },
-        {
-          "value": "${aws_lb.ips_services_internal_facing_lb.dns_name}",
-          "name": "API_HOST"
-        }
-      ],
-    "portMappings": [
-        {
-          "hostPort": 5000,
-          "protocol": "tcp",
-          "containerPort": 5000
-        }
-      ]
-  }
-]
-EOF
+  container_definitions    = templatefile("${path.module}/ui-task-def.json", { services_alb_dns = aws_lb.ips_services_internal_facing_lb.dns_name } )
 }
 
 

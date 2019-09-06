@@ -1,0 +1,51 @@
+[
+  {
+    "name": "ips-ui-tf",
+    "image": "014669633018.dkr.ecr.eu-west-2.amazonaws.com/ips-ui:latest",
+    "memory": null,
+    "memoryReservation": null,
+    "essential": true,
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "secretOptions": null,
+      "options": {
+        "awslogs-group": "/ecs/ips-services",
+        "awslogs-region": "eu-west-2",
+        "awslogs-stream-prefix": "ecs"
+      }
+    },
+    "environment": [
+      {
+        "name": "API_PORT",
+        "value": "5000"
+      },
+      {
+        "name": "API_PROTOCOL",
+        "value": "http"
+      },
+      {
+        "name": "FLASK_APP",
+        "value": "ips"
+      },
+      {
+        "name": "FLASK_ENV",
+        "value": "development"
+      },
+      {
+        "name": "UI_FLASK_APP",
+        "value": "ips"
+      },
+      {
+        "value": "${services_alb_dns}",
+        "name": "API_HOST"
+      }
+    ],
+    "portMappings": [
+      {
+        "hostPort": 5000,
+        "protocol": "tcp",
+        "containerPort": 5000
+      }
+    ]
+  }
+]
