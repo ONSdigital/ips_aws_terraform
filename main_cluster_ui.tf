@@ -45,11 +45,9 @@ resource "aws_ecs_task_definition" "ui_task_def" {
         {
           "name": "UI_FLASK_APP",
           "value": "ips"
-        }
-      ],
-      "secrets": [
+        },
         {
-          "valueFrom": "/ips/terraform/services-host-ip",
+          "value": "${aws_lb.ips_services_internal_facing_lb.dns_name}",
           "name": "API_HOST"
         }
       ],
@@ -63,11 +61,6 @@ resource "aws_ecs_task_definition" "ui_task_def" {
   }
 ]
 EOF
-
-  //  volume {
-  //    name      = "service-storage"
-  //    host_path = "/ecs/service-storage"
-  //  }
 }
 
 

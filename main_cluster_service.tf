@@ -70,15 +70,14 @@ resource "aws_ecs_service" "ips_servs_service" {
     assign_public_ip = false
   }
 
-//  TODO: Needs some kind of Service Discovery...
-//  service discovery endpoint = "servs_task_def.local"
-//  service discovery name = "servs_task"
-//  DNS record type = "A"
-//  contain... = null
-//  TTL = "60"
-//  namespace = "local (PRIVATE)"
-
+  load_balancer {
+    target_group_arn = aws_lb_target_group.ips_services_internal_facing_tg.arn
+    container_name   = "ips-services"
+    container_port   = 5000
   }
+
+  depends_on = [aws_lb_listener.ips_services_internal_facing_lb_listener, aws_lb_target_group.ips_services_internal_facing_tg]
+}
 
 resource "aws_security_group" "ips_servs_sg" {
   vpc_id      = aws_vpc.main_vpc.id
