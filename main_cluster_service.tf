@@ -20,7 +20,7 @@ resource "aws_ecs_task_definition" "ips_servs_task_def" {
         }
     },
     "name": "ips-services",
-    "image": "014669633018.dkr.ecr.eu-west-2.amazonaws.com/ips-services:2",
+    "image": "014669633018.dkr.ecr.eu-west-2.amazonaws.com/ips-services:latest",
     "cpu": 0,
     "memory": null,
     "memoryReservation": null,
