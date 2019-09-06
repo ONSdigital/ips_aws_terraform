@@ -1,3 +1,4 @@
+#TODO: Replace db_password in task def json with a valueFrom from AWS secrets
 resource "aws_ecs_task_definition" "ips_servs_task_def" {
   family                   = "ips-servs-tf"
   memory                   = "4096"
@@ -6,55 +7,13 @@ resource "aws_ecs_task_definition" "ips_servs_task_def" {
   cpu                      = "2048"
   task_role_arn            = "ecsTaskExecutionRole"
   execution_role_arn       = "ecsTaskExecutionRole"
-  container_definitions    = <<EOF
-  [
-    {
-    "logConfiguration":
-    {
-       "logDriver": "awslogs",
-       "secretOptions": null,
-       "options": {
-         "awslogs-group": "/ecs/ips-services",
-         "awslogs-region": "eu-west-2",
-         "awslogs-stream-prefix": "ecs"
-        }
-    },
-    "name": "ips-services",
-    "image": "014669633018.dkr.ecr.eu-west-2.amazonaws.com/ips-services:latest",
-    "cpu": 0,
-    "memory": null,
-    "memoryReservation": null,
-    "essential": true,
-    "environment":
-    [
+  container_definitions    = templatefile("${path.module}/service-task-def.json",
       {
-        "name": "DB_NAME",
-        "value": "ips"
-      },
-      {
-redacted  # Replace, using a regex
-        "value": "qsB9m9IwKG1CaC5Uu2qqmjUMaHGLXA"
-      },
-      {
-        "name": "DB_SERVER",
-        "value": "ips-db.cyjaepzpx1tk.eu-west-2.rds.amazonaws.com"
-      },
-      {
-        "name": "DB_USER_NAME",
-        "value": "admin"
-      }
-    ],
-    "portMappings":
-    [
-      {
-        "hostPort": 5000,
-        "protocol": "tcp",
-        "containerPort": 5000
-        }
-      ]
-    }
-  ]
-  EOF
+            db_name = var.db_name,
+            db_server = var.db_server,
+            db_user_name = var.db_user_name,
+            db_password = var.db_password,
+      } )
 }
 
 resource "aws_ecs_service" "ips_servs_service" {

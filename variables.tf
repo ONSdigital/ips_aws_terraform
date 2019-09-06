@@ -42,4 +42,7 @@ variable "aws_secret_key" {
 
 variable "common_name" {
 }
-
+variable "db_name" {}
+variable "db_server" {}
+variable "db_user_name" {}
+variable "db_password" {}

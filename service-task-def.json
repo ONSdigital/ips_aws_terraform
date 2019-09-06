@@ -1,0 +1,44 @@
+[
+  {
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "secretOptions": null,
+      "options": {
+        "awslogs-group": "/ecs/ips-services",
+        "awslogs-region": "eu-west-2",
+        "awslogs-stream-prefix": "ecs"
+      }
+    },
+    "name": "ips-services",
+    "image": "014669633018.dkr.ecr.eu-west-2.amazonaws.com/ips-services:latest",
+    "cpu": 0,
+    "memory": null,
+    "memoryReservation": null,
+    "essential": true,
+    "environment": [
+      {
+        "name": "DB_NAME",
+        "value": "${db_name}"
+      },
+      {
+        "name": "DB_PASSWORD",
+        "value": "${db_password}"
+      },
+      {
+        "name": "DB_SERVER",
+        "value": "${db_server}"
+      },
+      {
+        "name": "DB_USER_NAME",
+        "value": "${db_user_name}"
+      }
+    ],
+    "portMappings": [
+      {
+        "hostPort": 5000,
+        "protocol": "tcp",
+        "containerPort": 5000
+      }
+    ]
+  }
+]
