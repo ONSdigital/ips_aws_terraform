@@ -15,6 +15,16 @@ resource "aws_ecs_task_definition" "ui_task_def" {
     "memory": null,
     "memoryReservation": null,
     "essential": true,
+    "logConfiguration":
+    {
+       "logDriver": "awslogs",
+       "secretOptions": null,
+       "options": {
+         "awslogs-group": "/ecs/ips-services",
+         "awslogs-region": "eu-west-2",
+         "awslogs-stream-prefix": "ecs"
+        }
+    },
     "environment": [
         {
           "name": "API_HOST",

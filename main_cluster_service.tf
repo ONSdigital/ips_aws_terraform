@@ -9,6 +9,16 @@ resource "aws_ecs_task_definition" "ips_servs_task_def" {
   container_definitions    = <<EOF
   [
     {
+    "logConfiguration":
+    {
+       "logDriver": "awslogs",
+       "secretOptions": null,
+       "options": {
+         "awslogs-group": "/ecs/ips-services",
+         "awslogs-region": "eu-west-2",
+         "awslogs-stream-prefix": "ecs"
+        }
+    },
     "name": "ips-services",
     "image": "014669633018.dkr.ecr.eu-west-2.amazonaws.com/ips-services:2",
     "cpu": 0,
