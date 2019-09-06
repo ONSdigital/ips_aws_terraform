@@ -103,6 +103,16 @@ resource "aws_security_group_rule" "servs_sg_ingress_from_ui" {
   security_group_id = aws_security_group.ips_servs_sg.id
 }
 
+resource "aws_security_group_rule" "servs_sg_ingress_self" {
+  from_port = 0
+  protocol = -1
+  to_port = 0
+  type = "ingress"
+  self = true
+
+  // rules associated with security group:
+  security_group_id = aws_security_group.ips_servs_sg.id
+}
 resource "aws_security_group_rule" "servs_sg_egress_all" {
   from_port = 0
   protocol = -1
