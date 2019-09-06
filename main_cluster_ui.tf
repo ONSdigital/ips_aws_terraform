@@ -27,10 +27,6 @@ resource "aws_ecs_task_definition" "ui_task_def" {
     },
     "environment": [
         {
-          "name": "API_HOST",
-          "value": "ips-services.ips-service"
-        },
-        {
           "name": "API_PORT",
           "value": "5000"
         },
@@ -49,6 +45,12 @@ resource "aws_ecs_task_definition" "ui_task_def" {
         {
           "name": "UI_FLASK_APP",
           "value": "ips"
+        }
+      ],
+      "secrets": [
+        {
+          "valueFrom": "/ips/terraform/services-host-ip",
+          "name": "API_HOST"
         }
       ],
     "portMappings": [
