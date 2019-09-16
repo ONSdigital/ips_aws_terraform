@@ -7,7 +7,7 @@ resource "aws_ecs_task_definition" "ui_task_def" {
   cpu                      = "512"
   task_role_arn            = "ecsTaskExecutionRole"
   execution_role_arn       = "ecsTaskExecutionRole"
-  container_definitions    = templatefile("${path.module}/ui-task-def.json", { services_alb_dns = aws_lb.ips_services_internal_facing_lb.dns_name } )
+  container_definitions    = templatefile("${path.module}/ui-task-def.json", { services_alb_dns = aws_lb.ips_services_internal_facing_lb.dns_name })
 }
 
 
@@ -46,20 +46,20 @@ resource "aws_security_group" "ui_sg" {
 }
 
 resource "aws_security_group_rule" "ui_sg_ingress_from_lb" {
-  from_port = 0
-  protocol = -1
-  to_port = 0
-  type = "ingress"
+  from_port                = 0
+  protocol                 = -1
+  to_port                  = 0
+  type                     = "ingress"
   source_security_group_id = aws_security_group.ips_lb_sg.id
 
   security_group_id = aws_security_group.ui_sg.id
 }
 
 resource "aws_security_group_rule" "ui_sg_egress_all" {
-  from_port = 0
-  protocol = -1
-  to_port = 0
-  type = "egress"
+  from_port   = 0
+  protocol    = -1
+  to_port     = 0
+  type        = "egress"
   cidr_blocks = [var.cidr_block_all]
 
   security_group_id = aws_security_group.ui_sg.id

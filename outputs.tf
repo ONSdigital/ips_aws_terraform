@@ -68,6 +68,6 @@ output "nat_sg_id" {
 
 output "lb_public_dns" {
   description = "Pubilc DNS of the main load balancer"
-  value = aws_lb.ips_lb.dns_name
+  value       = aws_lb.ips_lb.dns_name
 }
 

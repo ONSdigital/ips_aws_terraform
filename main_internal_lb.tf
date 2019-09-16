@@ -5,16 +5,16 @@ resource "aws_security_group" "ips_internal_lb_sg" {
     local.module_common_tags,
     {
       "Name" = "${local.common_name_prefix}-internal-facing-lb",
-      "app" = "ips"
+      "app"  = "ips"
     },
   )
 }
 
 resource "aws_security_group_rule" "ips_internal_lb_sg_ingress_from_ui" {
   from_port = 0
-  protocol = -1
-  to_port = 0
-  type = "ingress"
+  protocol  = -1
+  to_port   = 0
+  type      = "ingress"
   // traffic from:
   source_security_group_id = aws_security_group.ui_sg.id
 
@@ -24,20 +24,20 @@ resource "aws_security_group_rule" "ips_internal_lb_sg_ingress_from_ui" {
 
 resource "aws_security_group_rule" "ips_internal_lb_sg_ingress_from_self" {
   from_port = 0
-  protocol = -1
-  to_port = 0
-  type = "ingress"
-  self = true
+  protocol  = -1
+  to_port   = 0
+  type      = "ingress"
+  self      = true
 
   // rules associated with security group:
   security_group_id = aws_security_group.ips_internal_lb_sg.id
 }
 
 resource "aws_security_group_rule" "ips_internal_lb_sg_egress_all" {
-  from_port = 0
-  protocol = -1
-  to_port = 0
-  type = "egress"
+  from_port   = 0
+  protocol    = -1
+  to_port     = 0
+  type        = "egress"
   cidr_blocks = [var.cidr_block_all]
 
   security_group_id = aws_security_group.ips_internal_lb_sg.id
@@ -51,8 +51,8 @@ resource "aws_lb" "ips_services_internal_facing_lb" {
   subnets            = aws_subnet.private_subnets.*.id
 
   tags = {
-    Name = "ips-services-internal-lb",
-    app = "ips",
+    Name        = "ips-services-internal-lb",
+    app         = "ips",
     description = "ips services internal facing lb"
   }
 }
