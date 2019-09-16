@@ -27,6 +27,10 @@ variable "cidr_block_all" {
   default = "0.0.0.0/0"
 }
 
+variable "db_vpc_id"{
+  default = "vpc-0989c6aee4cafd3be"
+}
+
 # Mandataory inputs
 variable "bastion_ingress_ip" {
 }
