@@ -9,7 +9,7 @@
       "logDriver": "awslogs",
       "secretOptions": null,
       "options": {
-        "awslogs-group": "/ecs/ips-services",
+        "awslogs-group": "${log_group_name}",
         "awslogs-region": "eu-west-2",
         "awslogs-stream-prefix": "ecs"
       }

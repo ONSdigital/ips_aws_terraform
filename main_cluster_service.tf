@@ -1,4 +1,3 @@
-#TODO: Replace db_password in task def json with a valueFrom from AWS secrets
 resource "aws_ecs_task_definition" "ips_servs_task_def" {
   family                   = "ips-servs-tf"
   memory                   = "4096"
@@ -9,10 +8,11 @@ resource "aws_ecs_task_definition" "ips_servs_task_def" {
   execution_role_arn       = "ecsTaskExecutionRole"
   container_definitions = templatefile("${path.module}/service-task-def.json",
     {
-      db_name      = var.db_name,
-      db_server    = var.db_server,
-      db_user_name = var.db_user_name,
-      db_password  = var.db_password,
+      db_name        = var.db_name,
+      db_server      = var.db_server,
+      db_user_name   = var.db_user_name,
+      db_password    = var.db_password,
+      log_group_name = local.services_log_group_name
   })
 }
 
