@@ -71,6 +71,31 @@ resource "aws_security_group_rule" "servs_sg_ingress_self" {
   // rules associated with security group:
   security_group_id = aws_security_group.ips_servs_sg.id
 }
+
+resource "aws_security_group_rule" "servs_sg_ingress_from_internal_lb" {
+  from_port = 0
+  protocol  = -1
+  to_port   = 0
+  type      = "ingress"
+  // traffic from:
+  source_security_group_id = aws_security_group.ips_internal_lb_sg.id
+
+  // rules associated with security group:
+  security_group_id = aws_security_group.ips_servs_sg.id
+}
+
+resource "aws_security_group_rule" "servs_sg_ingress_from_nat" {
+  from_port = 0
+  protocol  = -1
+  to_port   = 0
+  type      = "ingress"
+  // traffic from:
+  source_security_group_id = aws_security_group.natsg.id
+
+  // rules associated with security group:
+  security_group_id = aws_security_group.ips_servs_sg.id
+}
+
 resource "aws_security_group_rule" "servs_sg_egress_all" {
   from_port   = 0
   protocol    = -1
