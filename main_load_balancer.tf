@@ -10,19 +10,19 @@ resource "aws_security_group" "ips_lb_sg" {
 }
 
 resource "aws_security_group_rule" "ips_lb_sg_ingress_80" {
-  from_port = 80
-  protocol = "tcp"
+  from_port         = 80
+  protocol          = "tcp"
   security_group_id = aws_security_group.ips_lb_sg.id
-  to_port = 80
-  type = "ingress"
-  cidr_blocks = [local.bastion_ingress_cidr]
+  to_port           = 80
+  type              = "ingress"
+  cidr_blocks       = [local.bastion_ingress_cidr]
 }
 
 resource "aws_security_group_rule" "ips_lb_sg_egress_all" {
-  type = "egress"
-  from_port = 0
-  protocol = -1
-  to_port = 0
+  type                     = "egress"
+  from_port                = 0
+  protocol                 = -1
+  to_port                  = 0
   source_security_group_id = aws_security_group.ui_sg.id
 
   security_group_id = aws_security_group.ips_lb_sg.id

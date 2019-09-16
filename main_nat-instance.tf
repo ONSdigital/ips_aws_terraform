@@ -11,16 +11,16 @@ resource "aws_security_group" "natsg" {
   }
 
   ingress {
-    from_port   = 0
-    protocol    = "tcp"
-    to_port     = 65535
+    from_port       = 0
+    protocol        = "tcp"
+    to_port         = 65535
     security_groups = [aws_security_group.ui_sg.id]
   }
 
   ingress {
-    from_port   = 0
-    protocol    = "tcp"
-    to_port     = 65535
+    from_port       = 0
+    protocol        = "tcp"
+    to_port         = 65535
     security_groups = [aws_security_group.ips_servs_sg.id]
   }
 

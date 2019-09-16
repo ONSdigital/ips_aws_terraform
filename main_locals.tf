@@ -3,7 +3,7 @@ locals {
   module_common_tags = {
     "Name" = var.common_name
   }
-  bastion_ingress_cidr      = "${var.bastion_ingress_ip}/32"
+  bastion_ingress_cidr = "${var.bastion_ingress_ip}/32"
   private_vpc_resource_tags = merge(
     local.module_common_tags,
     {
