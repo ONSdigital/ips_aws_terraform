@@ -7,10 +7,12 @@ resource "aws_ecs_task_definition" "ui_task_def" {
   cpu                      = "512"
   task_role_arn            = "ecsTaskExecutionRole"
   execution_role_arn       = "ecsTaskExecutionRole"
-  container_definitions    = templatefile("${path.module}/ui-task-def.json", { services_alb_dns = aws_lb.ips_services_internal_facing_lb.dns_name })
+  container_definitions = templatefile("${path.module}/ui-task-def.json",
+    {
+      services_alb_dns = aws_lb.ips_services_internal_facing_lb.dns_name,
+      log_group_name   = local.ui_log_group_name
+  })
 }
-
-
 
 resource "aws_ecs_service" "ui_service" {
   name            = "${local.common_name_prefix}-ips_ui_tf"
