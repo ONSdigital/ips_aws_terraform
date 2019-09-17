@@ -106,3 +106,24 @@ resource "aws_security_group_rule" "servs_sg_egress_all" {
   security_group_id = aws_security_group.ips_servs_sg.id
 }
 
+data "aws_security_group" "peered_db" {
+  vpc_id = data.aws_vpc.acceptor.id
+
+  filter {
+    name   = "tag:FilterKey"
+    values = ["*DB-Security-Group"]
+  }
+}
+
+resource "aws_security_group_rule" "ingress-into-db-group-sg-rule" {
+  type              = "ingress"
+  description       = "Allow MYSQL Traffic bettween services sg and peered db sg"
+  security_group_id = data.aws_security_group.peered_db.id
+
+  from_port                = 3306
+  to_port                  = 3306
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.ips_servs_sg.id
+
+  depends_on = [aws_vpc_peering_connection.default]
+}
