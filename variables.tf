@@ -46,3 +46,7 @@ variable "db_name" {}
 variable "db_server" {}
 variable "db_user_name" {}
 variable "db_password" {}
+
+variable "peered_vpc_name" {
+  description = "Name of the peered VPC with a DB"
+}

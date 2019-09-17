@@ -12,11 +12,12 @@ data "aws_vpc" "requestor" {
   depends_on = [aws_vpc.main_vpc]
 }
 
+
 data "aws_vpc" "acceptor" {
   // "Result depends on values that cannot be determined until after the "terraform apply"...apply had been run...
   filter {
     name   = "tag:Name"
-    values = ["ips-test-peer-cs-db"]
+    values = [var.peered_vpc_name]
   }
 }
 
