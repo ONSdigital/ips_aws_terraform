@@ -50,3 +50,15 @@ variable "db_password" {}
 variable "peered_vpc_name" {
   description = "Name of the peered VPC with a DB"
 }
+
+variable "ecr_repo" {
+  default = "014669633018.dkr.ecr.eu-west-2.amazonaws.com"
+}
+
+variable "ui_docker_image_tag_name" {
+  default = "latest"
+}
+
+variable "services_docker_image_tag_name" {
+  default = "latest"
+}

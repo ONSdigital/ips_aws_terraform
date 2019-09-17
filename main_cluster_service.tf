@@ -1,3 +1,8 @@
+locals {
+  is_services_tag_name_an_image_digest = length(regexall(".*sha256.*", var.services_docker_image_tag_name)) > 0
+  services_tag_name                    = local.is_services_tag_name_an_image_digest ? "@${var.services_docker_image_tag_name}" : ":${var.services_docker_image_tag_name}"
+}
+
 resource "aws_ecs_task_definition" "ips_servs_task_def" {
   family                   = "ips-servs-tf"
   memory                   = "4096"
@@ -13,6 +18,7 @@ resource "aws_ecs_task_definition" "ips_servs_task_def" {
       db_user_name   = var.db_user_name,
       db_password    = var.db_password,
       log_group_name = local.services_log_group_name
+      services_image = "${var.ecr_repo}/ips-services${local.services_tag_name}"
   })
 }
 

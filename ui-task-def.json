@@ -1,7 +1,7 @@
 [
   {
     "name": "ips-ui-tf",
-    "image": "014669633018.dkr.ecr.eu-west-2.amazonaws.com/ips-ui:latest",
+    "image": "${ui_image}",
     "memory": null,
     "memoryReservation": null,
     "essential": true,

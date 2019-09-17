@@ -1,3 +1,7 @@
+locals {
+  is_ui_tag_name_an_image_digest = length(regexall(".*sha256.*", var.ui_docker_image_tag_name)) > 0
+  ui_tag_name                    = local.is_ui_tag_name_an_image_digest ? "@${var.ui_docker_image_tag_name}" : ":${var.ui_docker_image_tag_name}"
+}
 
 resource "aws_ecs_task_definition" "ui_task_def" {
   family                   = "ips-ui-tf"
@@ -11,6 +15,7 @@ resource "aws_ecs_task_definition" "ui_task_def" {
     {
       services_alb_dns = aws_lb.ips_services_internal_facing_lb.dns_name,
       log_group_name   = local.ui_log_group_name
+      ui_image         = "${var.ecr_repo}/ips-ui${local.ui_tag_name}"
   })
 }
 
