@@ -71,6 +71,6 @@ output "lb_public_dns" {
   value       = aws_lb.ips_lb.dns_name
 }
 
-output "DB_Peering_Connection"{
+output "DB_Peering_Connection" {
   value = "Setting up peering connection from ${data.aws_vpc.requestor.tags["Name"]} to ${data.aws_vpc.acceptor.tags["Name"]}"
 }
