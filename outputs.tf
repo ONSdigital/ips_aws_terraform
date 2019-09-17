@@ -68,9 +68,9 @@ output "nat_sg_id" {
 
 output "lb_public_dns" {
   description = "Pubilc DNS of the main load balancer"
-  value       = aws_lb.ips_lb.dns_name
+  value       = "http://${aws_lb.ips_lb.dns_name}"
 }
 
 output "DB_Peering_Connection" {
-  value = "Setting up peering connection from ${data.aws_vpc.requestor.tags["Name"]} to ${data.aws_vpc.acceptor.tags["Name"]}"
+  value = "Setting up peering connection from ${aws_vpc.main_vpc.tags["Name"]} to ${data.aws_vpc.acceptor.tags["Name"]}"
 }
