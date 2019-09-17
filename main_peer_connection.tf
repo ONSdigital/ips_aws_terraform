@@ -16,7 +16,7 @@ data "aws_vpc" "acceptor" {
   // "Result depends on values that cannot be determined until after the "terraform apply"...apply had been run...
   filter {
     name   = "tag:Name"
-    values = ["ips-db-prod"]
+    values = ["ips-test-peer-cs-db"]
   }
 }
 
