@@ -21,16 +21,18 @@
         "value": "${db_name}"
       },
       {
-        "name": "DB_PASSWORD",
-        "value": "${db_password}"
-      },
-      {
         "name": "DB_SERVER",
         "value": "${db_server}"
       },
       {
         "name": "DB_USER_NAME",
         "value": "${db_user_name}"
+      }
+    ],
+    "secrets": [
+      {
+        "valueFrom": "${db_password}",
+        "name": "DB_PASSWORD"
       }
     ],
     "portMappings": [
