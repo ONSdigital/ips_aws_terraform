@@ -4,7 +4,7 @@ resource "aws_security_group" "ips_internal_lb_sg" {
   tags = merge(
     local.module_common_tags,
     {
-      "Name" = "${local.common_name_prefix}-internal-facing-lb",
+      "Name" = "${local.common_name_prefix}-Internal-Facing-lb",
       "app"  = "ips"
     },
   )
@@ -44,7 +44,7 @@ resource "aws_security_group_rule" "ips_internal_lb_sg_egress_all" {
 }
 
 resource "aws_lb" "ips_services_internal_facing_lb" {
-  name               = "${local.common_name_prefix}-services-int-lb"
+  name               = "${local.common_name_prefix}-Services-Int-LB"
   internal           = true
   load_balancer_type = "application"
   security_groups    = [aws_security_group.ips_internal_lb_sg.id]
@@ -58,7 +58,7 @@ resource "aws_lb" "ips_services_internal_facing_lb" {
 }
 
 resource "aws_lb_target_group" "ips_services_internal_facing_tg" {
-  name                 = "${local.common_name_prefix}-services-int-tg"
+  name                 = "${local.common_name_prefix}-Services-Int-TG"
   port                 = "5000"
   protocol             = "HTTP"
   target_type          = "ip"
