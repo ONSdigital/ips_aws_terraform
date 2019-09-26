@@ -12,10 +12,84 @@ resource "aws_security_group" "ips_lb_sg" {
 resource "aws_security_group_rule" "ips_lb_sg_ingress_80" {
   from_port         = 80
   protocol          = "tcp"
-  security_group_id = aws_security_group.ips_lb_sg.id
   to_port           = 80
   type              = "ingress"
-  cidr_blocks       = [local.bastion_ingress_cidr]
+  cidr_blocks = [var.cidr_block_all]
+
+  // rules associated with the security group:
+  security_group_id = aws_security_group.ips_lb_sg.id
+}
+
+resource "aws_security_group_rule" "ips_lb_sg_ingress_gov_wifi" {
+  from_port         = 443
+  protocol          = "tcp"
+  to_port           = 443
+  type              = "ingress"
+  cidr_blocks       = ["80.5.92.42/32"]
+  description       = "Allow traffic from GovWifi"
+
+  // rules associated with the security group:
+  security_group_id = aws_security_group.ips_lb_sg.id
+}
+
+resource "aws_security_group_rule" "ips_lb_sg_ingress_ons_guest" {
+  from_port         = 443
+  protocol          = "tcp"
+  to_port           = 443
+  type              = "ingress"
+  cidr_blocks       = ["51.7.82.137/32"]
+  description       = "Allow traffic from ONS Guest"
+
+  // rules associated with the security group:
+  security_group_id = aws_security_group.ips_lb_sg.id
+}
+
+resource "aws_security_group_rule" "ips_lb_sg_ingress_ons_vpn1" {
+  from_port         = 443
+  protocol          = "tcp"
+  to_port           = 443
+  type              = "ingress"
+  cidr_blocks       = ["194.34.204.37/32"]
+  description       = "Allow traffic from ONS VPN"
+
+  // rules associated with the security group:
+  security_group_id = aws_security_group.ips_lb_sg.id
+}
+
+resource "aws_security_group_rule" "ips_lb_sg_ingress_ons_vpn2" {
+  from_port         = 443
+  protocol          = "tcp"
+  to_port           = 443
+  type              = "ingress"
+  cidr_blocks       = ["194.34.204.36/32"]
+  description       = "Allow traffic from ONS VPN"
+
+  // rules associated with the security group:
+  security_group_id = aws_security_group.ips_lb_sg.id
+}
+
+resource "aws_security_group_rule" "ips_lb_sg_ingress_ons_vpn3" {
+  from_port         = 443
+  protocol          = "tcp"
+  to_port           = 443
+  type              = "ingress"
+  cidr_blocks       = ["194.34.206.36/32"]
+  description       = "Allow traffic from ONS VPN"
+
+  // rules associated with the security group:
+  security_group_id = aws_security_group.ips_lb_sg.id
+}
+
+resource "aws_security_group_rule" "ips_lb_sg_ingress_ons_vpn4" {
+  from_port         = 443
+  protocol          = "tcp"
+  to_port           = 443
+  type              = "ingress"
+  cidr_blocks       = ["194.34.206.37/32"]
+  description       = "Allow traffic from ONS VPN"
+
+  // rules associated with the security group:
+  security_group_id = aws_security_group.ips_lb_sg.id
 }
 
 resource "aws_security_group_rule" "ips_lb_sg_egress_all" {
@@ -23,7 +97,7 @@ resource "aws_security_group_rule" "ips_lb_sg_egress_all" {
   from_port                = 0
   protocol                 = -1
   to_port                  = 0
-  source_security_group_id = aws_security_group.ui_sg.id
+  cidr_blocks = [var.cidr_block_all]
 
   security_group_id = aws_security_group.ips_lb_sg.id
 }
@@ -57,8 +131,10 @@ resource "aws_lb_target_group" "ips_tg" {
 
 resource "aws_lb_listener" "ips_lb_listener" {
   load_balancer_arn = aws_lb.ips_lb.arn
-  port              = "80"
-  protocol          = "HTTP"
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = var.arn_certificate
 
   default_action {
     type             = "forward"
