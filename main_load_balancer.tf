@@ -111,7 +111,7 @@ resource "aws_lb" "ips_lb" {
 }
 
 resource "aws_lb_target_group" "ips_tg" {
-  name                 = "${local.common_name_prefix}-ips-tg-tf"
+  name                 = "${local.common_name_prefix}-Target-Group"
   port                 = "5000"
   protocol             = "HTTP"
   target_type          = "ip"
