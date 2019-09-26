@@ -27,6 +27,8 @@ variable "cidr_block_all" {
   default = "0.0.0.0/0"
 }
 
+variable "arn_certificate" {}
+
 # Mandataory inputs
 variable "bastion_ingress_ip" {
 }
@@ -62,3 +64,4 @@ variable "ui_docker_image_tag_name" {
 variable "services_docker_image_tag_name" {
   default = "latest"
 }
+
