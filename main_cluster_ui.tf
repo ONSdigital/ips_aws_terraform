@@ -38,6 +38,10 @@ resource "aws_ecs_service" "ui_service" {
     container_port   = 5000
   }
 
+    deployment_controller {
+      type = "CODE_DEPLOY"
+    }
+
   depends_on = [aws_lb_listener.ips_lb_listener]
 }
 
