@@ -1,16 +1,3 @@
-//module "vpc" {
-//  source = "../modules/vpc-module"
-//
-//  main_address_space   = "${var.main_address_space}"
-//  cidr_block_all       = "${var.cidr_block_all}"
-//  private_subnet_count = "${var.private_subnet_count}"
-//  public_subnet_count  = "${var.public_subnet_count}"
-//  deploy_key_name      = "${var.deploy_key_name}"
-//  bastion_ingress_cidr = "${var.bastion_ingress_cidr}"
-//
-//  parent_tags = "${merge(module.common_tags.tags, map("Name", "${var.common_name}"))}"
-//}
-
 variable "main_address_space" {
   default = "10.0.0.0/16"
 }
@@ -26,6 +13,8 @@ variable "private_subnet_count" {
 variable "cidr_block_all" {
   default = "0.0.0.0/0"
 }
+
+variable "arn_certificate" {}
 
 # Mandataory inputs
 variable "bastion_ingress_ip" {
@@ -62,3 +51,4 @@ variable "ui_docker_image_tag_name" {
 variable "services_docker_image_tag_name" {
   default = "latest"
 }
+
