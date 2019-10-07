@@ -21,7 +21,7 @@ resource "aws_codedeploy_deployment_group" "ips_code_deploy_group" {
 
     terminate_blue_instances_on_deployment_success {
       action                           = "TERMINATE"
-      termination_wait_time_in_minutes = 10
+      termination_wait_time_in_minutes = 45
     }
   }
 
@@ -62,7 +62,7 @@ resource "aws_lb_target_group" "green" {
 
   health_check {
     protocol            = "HTTP"
-    port                = 500
+    port                = "traffic-port"
     healthy_threshold   = 2
     unhealthy_threshold = 2
     timeout             = 5
@@ -81,11 +81,19 @@ resource "aws_lb_target_group" "blue" {
 
   health_check {
     protocol            = "HTTP"
-    port                = 500
+    port                = "traffic-port"
     healthy_threshold   = 2
     unhealthy_threshold = 2
     timeout             = 5
     interval            = 6
     matcher             = "200,301,302"
   }
+}
+
+resource "aws_lb" "ips_cd_lb" {
+  name               = "${local.common_name_prefix}-ips-lb-tf"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.ips_lb_sg.id]
+  subnets            = aws_subnet.public_subnets.*.id
 }

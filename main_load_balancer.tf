@@ -138,7 +138,7 @@ resource "aws_lb_listener" "ips_lb_listener" {
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.ips_tg.arn
+    target_group_arn = aws_lb_target_group.blue.arn
   }
 }
 
