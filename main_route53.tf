@@ -1,5 +1,5 @@
 data "aws_route53_zone" "ips-private" {
-  name = "ons-ips.uk."
+  name = "ons-ips-b.uk."
 }
 
 resource "aws_route53_record" "ips-type-A" {

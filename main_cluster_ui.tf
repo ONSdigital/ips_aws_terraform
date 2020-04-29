@@ -33,8 +33,8 @@ resource "aws_ecs_service" "ui_service" {
   }
 
   load_balancer {
-    target_group_arn = aws_lb_target_group.blue.arn
-    container_name   = "ips-ui-tf"
+    target_group_arn = aws_lb_target_group.ips_tg.arn
+    container_name   = "ips-ui"
     container_port   = 5000
   }
 

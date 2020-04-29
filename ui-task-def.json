@@ -1,6 +1,6 @@
 [
   {
-    "name": "ips-ui-tf",
+    "name": "ips-ui",
     "image": "${ui_image}",
     "memory": null,
     "memoryReservation": null,

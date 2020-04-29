@@ -1,5 +1,5 @@
 variable "main_address_space" {
-  default = "10.0.0.0/16"
+  default = "10.30.0.0/16"
 }
 
 variable "public_subnet_count" {
@@ -35,7 +35,7 @@ variable "peered_vpc_name" {
 }
 
 variable "ecr_repo" {
-  default = "014669633018.dkr.ecr.eu-west-2.amazonaws.com"
+  default = "000704438865.dkr.ecr.eu-west-2.amazonaws.com"
 }
 
 variable "ui_docker_image_tag_name" {
