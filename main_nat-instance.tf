@@ -8,6 +8,7 @@ resource "aws_security_group" "natsg" {
     protocol    = "udp"
     to_port     = 53
     cidr_blocks = aws_subnet.private_subnets.*.cidr_block
+    description = "Allow UDP:53"
   }
 
   ingress {
@@ -15,6 +16,7 @@ resource "aws_security_group" "natsg" {
     protocol        = "tcp"
     to_port         = 65535
     security_groups = [aws_security_group.ui_sg.id]
+    description     = "All TCP ingress from UI SG"
   }
 
   ingress {
@@ -22,6 +24,7 @@ resource "aws_security_group" "natsg" {
     protocol        = "tcp"
     to_port         = 65535
     security_groups = [aws_security_group.ips_servs_sg.id]
+    description     = "All TCP ingress from services SG"
   }
 
   ingress {
@@ -29,6 +32,7 @@ resource "aws_security_group" "natsg" {
     protocol  = "tcp"
     to_port   = 22
     cidr_blocks = [local.bastion_ingress_cidr]
+    description = "SSH ingress from specific ip"
   }
 
   ingress {
@@ -36,6 +40,7 @@ resource "aws_security_group" "natsg" {
     protocol  = -1
     to_port   = 0
     self      = true
+    description = "Allow all traffic within self"
   }
 
   egress {
@@ -43,6 +48,7 @@ resource "aws_security_group" "natsg" {
     protocol    = "tcp"
     to_port     = 80
     cidr_blocks = [var.cidr_block_all]
+    description = "Allow all HTTP traffic"
   }
 
   egress {
@@ -50,6 +56,7 @@ resource "aws_security_group" "natsg" {
     protocol    = "tcp"
     to_port     = 443
     cidr_blocks = [var.cidr_block_all]
+    description = "Allow all HTTPS traffic"
   }
 
   egress {
@@ -57,6 +64,7 @@ resource "aws_security_group" "natsg" {
     protocol    = "udp"
     to_port     = 53
     cidr_blocks = [var.cidr_block_all]
+    description = "Allow all DNS traffic"
   }
 
   egress {
@@ -67,6 +75,7 @@ resource "aws_security_group" "natsg" {
       aws_subnet.private_subnets.*.cidr_block,
       aws_subnet.public_subnets.*.cidr_block,
     )
+    description = "Allow outgoing MySQL Traffic"
   }
 
   tags = merge(
