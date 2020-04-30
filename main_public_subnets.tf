@@ -33,7 +33,7 @@ resource "aws_route" "public_subnet_route" {
 resource "aws_route_table_association" "route_tbl_assoc_public" {
   count          = length(aws_subnet.public_subnets)
   route_table_id = aws_route_table.route_tbl_public.id
-  subnet_id      = "${element(aws_subnet.public_subnets.*.id, count.index)} "
+  subnet_id      = element(aws_subnet.public_subnets.*.id, count.index)
 }
 
 resource "aws_security_group" "public_sg" {

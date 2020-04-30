@@ -40,7 +40,7 @@ resource "aws_route" "private_subnet_route" {
 resource "aws_route_table_association" "route_tbl_assoc_private" {
   count          = length(aws_subnet.private_subnets)
   route_table_id = aws_route_table.route_tbl_private.id
-  subnet_id      = "${element(aws_subnet.private_subnets.*.id, count.index)} "
+  subnet_id      = element(aws_subnet.private_subnets.*.id, count.index)
 }
 
 resource "aws_security_group" "private_sg" {
