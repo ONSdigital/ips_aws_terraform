@@ -6,16 +6,12 @@ When invoking `terraform apply` the following params needs to be passed in:
 ```
 variable "bastion_ingress_ip" {}
 variable "deploy_key_name" {}
-variable "aws_access_key" {}
-variable "aws_secret_key" {}
 variable "common_name" {}
 ```
 
 The above vars can either be passed in using `-var` directly on the command line or a `.tfvars` file can be setup like so:
 ```
 ❯ cat $HOME/.aws/terraform-ons.tfvars                                                                                                                                                                    <ons.ash.jindal> [12-Aug 12:44:46]
-aws_access_key = <REDACTED>
-aws_secret_key = <REDACTED>
 arn_certificate = <REDACTED>
 ```
 

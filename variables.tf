@@ -23,12 +23,6 @@ variable "bastion_ingress_ip" {
 variable "deploy_key_name" {
 }
 
-variable "aws_access_key" {
-}
-
-variable "aws_secret_key" {
-}
-
 variable "common_name" {
 }
 variable "db_name" {}
