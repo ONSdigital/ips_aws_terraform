@@ -3,7 +3,7 @@ resource "aws_ecs_cluster" "ips_cluster" {
 }
 
 variable "cluster_components" {
-  type = "map"
+  type = map
   default = {
     ui_component       = "ui"
     services_component = "service"

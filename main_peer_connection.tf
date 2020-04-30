@@ -41,14 +41,14 @@ resource "aws_route" "requestor_public" {
   route_table_id            = aws_route_table.route_tbl_public.id
   destination_cidr_block    = data.aws_vpc.acceptor.cidr_block
   vpc_peering_connection_id = aws_vpc_peering_connection.default.id
-  depends_on                = ["aws_vpc_peering_connection.default"]
+  depends_on                = [aws_vpc_peering_connection.default]
 }
 
 resource "aws_route" "requestor_private" {
   route_table_id            = aws_route_table.route_tbl_private.id
   destination_cidr_block    = data.aws_vpc.acceptor.cidr_block
   vpc_peering_connection_id = aws_vpc_peering_connection.default.id
-  depends_on                = ["aws_vpc_peering_connection.default"]
+  depends_on                = [aws_vpc_peering_connection.default]
 }
 
 # Create routes from acceptor to requestor
@@ -57,5 +57,5 @@ resource "aws_route" "acceptor" {
   route_table_id            = distinct(sort(data.aws_route_table.acceptor.*.route_table_id))[count.index]
   destination_cidr_block    = var.main_address_space
   vpc_peering_connection_id = aws_vpc_peering_connection.default.id
-  depends_on                = ["data.aws_route_table.acceptor", "aws_vpc_peering_connection.default"]
+  depends_on                = [data.aws_route_table.acceptor, aws_vpc_peering_connection.default]
 }
