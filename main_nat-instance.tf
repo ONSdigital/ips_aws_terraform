@@ -78,7 +78,7 @@ resource "aws_security_group" "natsg" {
 }
 
 resource "aws_instance" "nat" {
-  ami                         = data.aws_ami.nat_instance_ami.id
+  ami                         = data.aws_ami.al2_ami.id
   instance_type               = "t2.micro"
   key_name                    = var.deploy_key_name
   associate_public_ip_address = true
@@ -86,6 +86,14 @@ resource "aws_instance" "nat" {
 
   subnet_id              = aws_subnet.public_subnets[0].id
   vpc_security_group_ids = [aws_security_group.natsg.id, aws_security_group.public_sg.id]
+
+  user_data                   = <<EOF
+#!/bin/bash
+sudo sysctl -w net.ipv4.ip_forward=1
+sudo /sbin/iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+sudo service sshd stop
+sudo systemctl stop rpcbind
+  EOF
 
   tags = merge(
     local.module_common_tags,
@@ -95,3 +103,21 @@ resource "aws_instance" "nat" {
   )
 }
 
+
+data "aws_ami" "al2_ami" {
+  most_recent = true
+  owners      = ["amazon"]
+  filter {
+    name   = "owner-alias"
+    values = ["amazon"]
+  }
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm*"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
+}
