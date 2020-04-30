@@ -19,3 +19,7 @@ locals {
   services_log_group_name = "/ecs/${local.common_name_prefix}/${var.cluster_components.services_component}"
   ui_log_group_name       = "/ecs/${local.common_name_prefix}/${var.cluster_components["ui_component"]}"
 }
+
+data "aws_iam_role" "ecsTaskExecutionRole" {
+  name = "ecsTaskExecutionRole"
+}
