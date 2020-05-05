@@ -108,6 +108,7 @@ resource "aws_lb" "ips_lb" {
   load_balancer_type = "application"
   security_groups    = [aws_security_group.ips_lb_sg.id]
   subnets            = aws_subnet.public_subnets.*.id
+  idle_timeout       = 300
 }
 
 resource "aws_lb_target_group" "ips_tg" {
