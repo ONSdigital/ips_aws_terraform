@@ -20,12 +20,6 @@ variable "arn_certificate" {}
 variable "bastion_ingress_ip" {
 }
 
-variable "aws_access_key" {
-}
-
-variable "aws_secret_key" {
-}
-
 variable "deploy_key_name" {
 }
 
@@ -53,11 +47,11 @@ variable "services_docker_image_tag_name" {
 }
 
 variable instance_class {
-  type    = "string"
+  type    = string
   default = "db.t3.medium"
 }
 
 variable parameter_group_name {
-  type    = "string"
+  type    = string
   default = "ips-mysql"
 }

@@ -57,10 +57,10 @@ resource "aws_security_group_rule" "db_sg_from_bastion" {
 }
 
 resource "aws_security_group_rule" "db_sg_egress_all" {
-  from_port = 0
-  protocol  = -1
-  to_port   = 0
-  type      = "egress"
+  from_port   = 0
+  protocol    = -1
+  to_port     = 0
+  type        = "egress"
   cidr_blocks = [var.cidr_block_all]
 
   // rules associated with security group:
@@ -80,7 +80,7 @@ resource "aws_db_instance" "default" {
   username = var.db_user_name
   password = var.db_password
 
-  parameter_group_name = "${aws_db_parameter_group.database.name}"
+  parameter_group_name = aws_db_parameter_group.database.name
 
   vpc_security_group_ids = [aws_security_group.db-sg.id]
   db_subnet_group_name   = aws_db_subnet_group.db-subnet.name
@@ -103,11 +103,6 @@ resource "aws_db_parameter_group" "database" {
     name  = "wait_timeout"
     value = "31536000"
   }
-
-//  parameter {
-//    name  = "innodb_log_file_size"
-//    value = ""
-//  }
 
   parameter {
     name  = "max_allowed_packet"
