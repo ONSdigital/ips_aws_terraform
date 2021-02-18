@@ -5,16 +5,16 @@ locals {
 
 resource "aws_ecs_task_definition" "ips_servs_task_def" {
   family                   = "ips-servs-tf"
-  memory                   = "4096"
+  memory                   = "8192"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu                      = "2048"
+  cpu                      = "4096"
   task_role_arn            = data.aws_iam_role.ecsTaskExecutionRole.arn
   execution_role_arn       = data.aws_iam_role.ecsTaskExecutionRole.arn
   container_definitions = templatefile("${path.module}/service-task-def.json",
     {
       db_name        = var.db_name,
-      db_server      = var.db_server,
+      db_server      = "${aws_db_instance.default.address}"
       db_user_name   = var.db_user_name,
       db_password    = var.db_password,
       log_group_name = local.services_log_group_name
@@ -112,24 +112,35 @@ resource "aws_security_group_rule" "servs_sg_egress_all" {
   security_group_id = aws_security_group.ips_servs_sg.id
 }
 
-data "aws_security_group" "peered_db" {
-  vpc_id = data.aws_vpc.acceptor.id
-
-  filter {
-    name   = "tag:FilterKey"
-    values = ["*DB-Security-Group"]
-  }
-}
+//data "aws_security_group" "peered_db" {
+//  vpc_id = data.aws_vpc.acceptor.id
+//
+//  filter {
+//    name   = "tag:FilterKey"
+//    values = ["*DB-Security-Group"]
+//  }
+//}
+//
+//resource "aws_security_group_rule" "ingress-into-db-group-sg-rule" {
+//  type              = "ingress"
+//  description       = "Allow MYSQL Traffic bettween services sg and peered db sg"
+//  security_group_id = data.aws_security_group.peered_db.id
+//
+//  from_port                = 3306
+//  to_port                  = 3306
+//  protocol                 = "tcp"
+//  source_security_group_id = aws_security_group.ips_servs_sg.id
+//
+//  depends_on = [aws_vpc_peering_connection.default]
+//}
 
 resource "aws_security_group_rule" "ingress-into-db-group-sg-rule" {
   type              = "ingress"
   description       = "Allow MYSQL Traffic bettween services sg and peered db sg"
-  security_group_id = data.aws_security_group.peered_db.id
+  security_group_id = aws_security_group.db-sg.id
 
   from_port                = 3306
   to_port                  = 3306
   protocol                 = "tcp"
   source_security_group_id = aws_security_group.ips_servs_sg.id
-
-  depends_on = [aws_vpc_peering_connection.default]
 }

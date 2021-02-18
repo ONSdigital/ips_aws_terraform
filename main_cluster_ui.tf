@@ -5,10 +5,10 @@ locals {
 
 resource "aws_ecs_task_definition" "ui_task_def" {
   family                   = "ips-ui-tf"
-  memory                   = "1024"
+  memory                   = "4096"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu                      = "512"
+  cpu                      = "2048"
   task_role_arn            = data.aws_iam_role.ecsTaskExecutionRole.arn
   execution_role_arn       = data.aws_iam_role.ecsTaskExecutionRole.arn
   container_definitions = templatefile("${path.module}/ui-task-def.json",

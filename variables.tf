@@ -20,19 +20,25 @@ variable "arn_certificate" {}
 variable "bastion_ingress_ip" {
 }
 
+variable "aws_access_key" {
+}
+
+variable "aws_secret_key" {
+}
+
 variable "deploy_key_name" {
 }
 
 variable "common_name" {
 }
 variable "db_name" {}
-variable "db_server" {}
+//variable "db_server" {}
 variable "db_user_name" {}
 variable "db_password" {}
 
-variable "peered_vpc_name" {
-  description = "Name of the peered VPC with a DB"
-}
+//variable "peered_vpc_name" {
+//  description = "Name of the peered VPC with a DB"
+//}
 
 variable "ecr_repo" {
   default = "000704438865.dkr.ecr.eu-west-2.amazonaws.com"
@@ -46,3 +52,12 @@ variable "services_docker_image_tag_name" {
   default = "latest"
 }
 
+variable instance_class {
+  type    = "string"
+  default = "db.t3.medium"
+}
+
+variable parameter_group_name {
+  type    = "string"
+  default = "ips-mysql"
+}
