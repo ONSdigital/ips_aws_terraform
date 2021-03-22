@@ -1,0 +1,70 @@
+github_auth: &github_auth
+  username: ((github.concourse_access_key))
+  password: x-oauth-basic
+
+resource_types:
+- name: terraform
+  type: docker-image
+  source:
+    repository: ljfranklin/terraform-resource
+    tag: latest
+
+resources:
+  - name: ips-repo
+    type: git
+    icon: &git-icon github-circle
+    source:
+      <<: *github_auth
+      uri: https://github.com/ONSdigital/ips_aws_terraform.git
+      branch: main
+
+  - name: ips-sandbox-tf
+    type: terraform
+    source:
+      env_name: sandbox
+      backend_type: s3
+      backend_config:
+        bucket: socsur-ips-aws-b-services-terraform-state
+        key: ips-concourse/terraform.tfstate
+        dynamodb_table: socsur-ips-aws-b-services-terraform-locks
+        region: eu-west-2
+        access_key: ((aws.access_key_id))
+        secret_key: ((aws.access_key_secret))
+        role_arn: ((aws.deploy_role_sandbox))
+      env:
+        AWS_ACCESS_KEY_ID: ((aws.access_key_id))
+        AWS_SECRET_ACCESS_KEY: ((aws.access_key_secret))
+
+jobs:
+
+  - name: deploy-ips
+    serial: true
+    plan:
+      - get: ips-repo
+#        trigger: true
+#        passed:
+#          - terraform-unit-tests
+#          - test-lambda-contact-ingest
+#      - task: package-lambda-contact-ingest
+#        file: spp-ingest-repo/concourse_pipeline/tasks/package-lambda/task.yml
+#        output_mapping:
+#          packaged-lambda: lambda_contact_ingest_package
+#        params:
+#          LAMBDA_FUNCTION: contact_ingest
+#          CONCOURSE_ACCESS_TOKEN: ((github.concourse_access_key))
+      - put: ips-sandbox-tf
+        params:
+          terraform_source: spp-ingest-repo/terraform/
+          vars:
+            role_arn: ((aws.deploy_role_sandbox))
+            environment_name: sandbox
+            region: eu-west-2
+            bastion_ingress_ip:
+            deploy_key_name:
+            common_name:
+            db_name:
+            db_password:
+            db_user_name:
+            arn_certificate:
+
+
