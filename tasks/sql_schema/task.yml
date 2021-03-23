@@ -6,7 +6,7 @@ image_resource:
     tag: 3.8-slim
 inputs:
   - name: ips-repo
-  - name: ips-services-git
+  - name: ips-service-git
   - name: terraform
 run:
   path: ips-repo/tasks/sql_schema/task.sh

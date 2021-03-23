@@ -71,6 +71,14 @@ output "lb_public_dns" {
   value       = "http://${aws_lb.ips_lb.dns_name}"
 }
 
-//output "DB_Peering_Connection" {
-//  value = "Setting up peering connection from ${aws_vpc.main_vpc.tags["Name"]} to ${data.aws_vpc.acceptor.tags["Name"]}"
-//}
+output "sql_host" {
+  value = aws_db_instance.default.address
+}
+
+output "sql_password" {
+  value = aws_db_instance.default.password
+}
+
+output "bastion_id" {
+  value = aws_instance.bastion.id
+}

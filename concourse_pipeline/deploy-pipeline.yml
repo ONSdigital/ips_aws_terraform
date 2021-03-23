@@ -83,7 +83,8 @@ jobs:
       - in_parallel:
         - get: ips-repo
           passed: [deploy-ips]
-        - get: ips-services-git
+          trigger: true
+        - get: ips-service-git
         - get: ips-sandbox-tf
           passed: [deploy-ips]
       - task: insert-ips-sql-schema
