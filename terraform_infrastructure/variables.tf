@@ -17,22 +17,17 @@ variable "cidr_block_all" {
 variable "arn_certificate" {}
 
 # Mandataory inputs
-variable "bastion_ingress_ip" {
-}
+variable "bastion_ingress_ip" {}
 
-variable "deploy_key_name" {
-}
+variable "deploy_key_name" {}
 
-variable "common_name" {
-}
+variable "common_name" {}
+
 variable "db_name" {}
-//variable "db_server" {}
-variable "db_user_name" {}
-variable "db_password" {}
 
-//variable "peered_vpc_name" {
-//  description = "Name of the peered VPC with a DB"
-//}
+variable "db_user_name" {}
+
+variable "db_password" {}
 
 variable "ecr_repo" {
   default = "000704438865.dkr.ecr.eu-west-2.amazonaws.com"
