@@ -1,32 +1,81 @@
-This repository creates a VPC for IPS' ECS Cluster on AWS
+# cross-cutting-aws-bootstrap
 
+A repo used for boostrapping SPP Cross Cutting AWS accounts.
 
-When invoking `terraform apply` the following params needs to be passed in:
+It will setup the following:
 
+- S3 Buckets for terraform state
+- DynamoDB tables for terraform locks
+- Create an IAM user and role for use with concourse
+- Export `access_key_id`, `secret_access_key` and `deploy_role` for the concourse IAM user.
+
+## Pre-reqs
+
+- [Terragrunt](https://terragrunt.gruntwork.io/)
+
+    ```sh
+    brew install terragrunt
+    ```
+
+- [yq](https://github.com/mikefarah/yq)
+
+    ```sh
+    brew install yq
+    ```
+
+- [gcloud](https://formulae.brew.sh/cask/google-cloud-sdk)
+
+    ```sh
+    brew install --cask google-cloud-sdk
+    echo 'export CLOUDSDK_PYTHON="$(brew --prefix)/opt/python@3.8/libexec/bin/python"' >> ~/.profile
+    echo 'source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.bash.inc"' >> ~/.profile
+    echo 'source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.bash.inc"' >> ~/.profile
+    ```
+
+- [fly](https://concourse.gcp.onsdigital.uk/api/v1/cli?arch=amd64&platform=darwin)
+
+## Bootstrapping a new account
+
+Current environments:
+
+- sandbox
+
+From root directory:
+
+```sh
+TF_ENV=<env_name> ./ips_user_setup/scripts/setup.sh
 ```
-variable "bastion_ingress_ip" {}
-variable "deploy_key_name" {}
-variable "common_name" {}
+
+### Setting the concourse user credentials in concourse
+
+In order to deploy our terraform code via concourse we need to authenticate and assume a role using credentials stored
+as secrets in our concourse environments.
+
+To keep this as simple as possible a script has been provided.
+
+**NOTE**: Make sure your secret name is scoped to your environment.
+
+```sh
+TF_ENV=<env_name> SECRET_NAME=<secret_name> ./scripts/set_aws_creds.sh
 ```
 
-The above vars can either be passed in using `-var` directly on the command line or a `.tfvars` file can be setup like so:
-```
-❯ cat $HOME/.aws/terraform-ons.tfvars                                                                                                                                                                    <ons.ash.jindal> [12-Aug 12:44:46]
-arn_certificate = <REDACTED>
+For example:
+
+```sh
+TF_ENV=integration SECRET_NAME=awsint ./scripts/set_aws_creds.sh
 ```
 
+This makes our credentials usable via `((awsint.access_key_id))`, `((awsint.secret_access_key))` and
+`((awsint.deploy_role))` in our concourse pipelines.
 
-For instance, the following command uses a combination of both the approaches, by specifying vars that may change on the command line directly and moving the
-vars that contains sensitive information to the .tfvars file so that they do not end up in the shell history:
+#### You can check these secrets have set properly
+
+```sh
+SECRET_NAME=<secret_name> SECRET_KEY=<secret_key> ./scripts/check_secret.sh
 ```
-terraform plan \
-    -var "bastion_ingress_ip=$(curl --silent  ifconfig.co)" \
-    -var "deploy_key_name=ConcDeploy"  \
-    -var "common_name=ips-prod"   \
-    -var "peered_vpc_name=ips-prod-test-db" \     
-    -var "db_name=<REDACTED>"  \    
-    -var "db_password=<REDACTED>" \    
-    -var "db_server=<REDACTED>"  \    
-    -var "db_user_name=<REDACTED>"   \
-    -var-file=$HOME/.aws/tf-creds.tfvars 
+
+For example:
+
+```sh
+SECRET_NAME=awssandbox SECRET_KEY=access_key_id ./scripts/check_secret.sh
 ```

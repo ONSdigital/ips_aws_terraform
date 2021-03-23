@@ -28,18 +28,18 @@ resource "aws_security_group" "natsg" {
   }
 
   ingress {
-    from_port = 22
-    protocol  = "tcp"
-    to_port   = 22
+    from_port   = 22
+    protocol    = "tcp"
+    to_port     = 22
     cidr_blocks = [local.bastion_ingress_cidr]
     description = "SSH ingress from specific ip"
   }
 
   ingress {
-    from_port = 0
-    protocol  = -1
-    to_port   = 0
-    self      = true
+    from_port   = 0
+    protocol    = -1
+    to_port     = 0
+    self        = true
     description = "Allow all traffic within self"
   }
 
@@ -96,7 +96,7 @@ resource "aws_instance" "nat" {
   subnet_id              = aws_subnet.public_subnets[0].id
   vpc_security_group_ids = [aws_security_group.natsg.id, aws_security_group.public_sg.id]
 
-  user_data                   = <<EOF
+  user_data = <<EOF
 #!/bin/bash
 sudo sysctl -w net.ipv4.ip_forward=1
 sudo /sbin/iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE

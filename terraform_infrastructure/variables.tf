@@ -55,3 +55,5 @@ variable parameter_group_name {
   type    = string
   default = "ips-mysql"
 }
+
+variable "role_arn" {}

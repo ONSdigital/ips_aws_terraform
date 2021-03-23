@@ -32,8 +32,8 @@ resource "aws_instance" "bastion" {
   associate_public_ip_address = true
   source_dest_check           = false
 
-  subnet_id                   = aws_subnet.public_subnets[0].id
-  vpc_security_group_ids      = [aws_security_group.bastion_sg.id]
+  subnet_id              = aws_subnet.public_subnets[0].id
+  vpc_security_group_ids = [aws_security_group.bastion_sg.id]
 
   tags = merge(
     local.module_common_tags,

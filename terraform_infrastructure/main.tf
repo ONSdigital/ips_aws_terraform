@@ -1,6 +1,9 @@
 provider "aws" {
   region  = "eu-west-2"
   version = "~> 2.60.0"
+  assume_role {
+    role_arn = var.role_arn
+  }
 }
 
 resource "aws_vpc" "main_vpc" {

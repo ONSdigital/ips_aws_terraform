@@ -9,6 +9,7 @@ terraform.tfstate.backup
 # Secrets and whatnot
 keys/
 secrets.tfvars
+aws.txt
 
 # IDE nonsense
 .idea

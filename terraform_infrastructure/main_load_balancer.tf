@@ -10,10 +10,10 @@ resource "aws_security_group" "ips_lb_sg" {
 }
 
 resource "aws_security_group_rule" "ips_lb_sg_ingress_80" {
-  from_port         = 80
-  protocol          = "tcp"
-  to_port           = 80
-  type              = "ingress"
+  from_port   = 80
+  protocol    = "tcp"
+  to_port     = 80
+  type        = "ingress"
   cidr_blocks = [var.cidr_block_all]
 
   // rules associated with the security group:
@@ -21,82 +21,82 @@ resource "aws_security_group_rule" "ips_lb_sg_ingress_80" {
 }
 
 resource "aws_security_group_rule" "ips_lb_sg_ingress_gov_wifi" {
-  from_port         = 443
-  protocol          = "tcp"
-  to_port           = 443
-  type              = "ingress"
-  cidr_blocks       = ["80.5.92.42/32"]
-  description       = "Allow traffic from GovWifi"
+  from_port   = 443
+  protocol    = "tcp"
+  to_port     = 443
+  type        = "ingress"
+  cidr_blocks = ["80.5.92.42/32"]
+  description = "Allow traffic from GovWifi"
 
   // rules associated with the security group:
   security_group_id = aws_security_group.ips_lb_sg.id
 }
 
 resource "aws_security_group_rule" "ips_lb_sg_ingress_ons_guest" {
-  from_port         = 443
-  protocol          = "tcp"
-  to_port           = 443
-  type              = "ingress"
-  cidr_blocks       = ["51.7.82.137/32"]
-  description       = "Allow traffic from ONS Guest"
+  from_port   = 443
+  protocol    = "tcp"
+  to_port     = 443
+  type        = "ingress"
+  cidr_blocks = ["51.7.82.137/32"]
+  description = "Allow traffic from ONS Guest"
 
   // rules associated with the security group:
   security_group_id = aws_security_group.ips_lb_sg.id
 }
 
 resource "aws_security_group_rule" "ips_lb_sg_ingress_ons_vpn1" {
-  from_port         = 443
-  protocol          = "tcp"
-  to_port           = 443
-  type              = "ingress"
-  cidr_blocks       = ["194.34.204.37/32"]
-  description       = "Allow traffic from ONS VPN"
+  from_port   = 443
+  protocol    = "tcp"
+  to_port     = 443
+  type        = "ingress"
+  cidr_blocks = ["194.34.204.37/32"]
+  description = "Allow traffic from ONS VPN"
 
   // rules associated with the security group:
   security_group_id = aws_security_group.ips_lb_sg.id
 }
 
 resource "aws_security_group_rule" "ips_lb_sg_ingress_ons_vpn2" {
-  from_port         = 443
-  protocol          = "tcp"
-  to_port           = 443
-  type              = "ingress"
-  cidr_blocks       = ["194.34.204.36/32"]
-  description       = "Allow traffic from ONS VPN"
+  from_port   = 443
+  protocol    = "tcp"
+  to_port     = 443
+  type        = "ingress"
+  cidr_blocks = ["194.34.204.36/32"]
+  description = "Allow traffic from ONS VPN"
 
   // rules associated with the security group:
   security_group_id = aws_security_group.ips_lb_sg.id
 }
 
 resource "aws_security_group_rule" "ips_lb_sg_ingress_ons_vpn3" {
-  from_port         = 443
-  protocol          = "tcp"
-  to_port           = 443
-  type              = "ingress"
-  cidr_blocks       = ["194.34.206.36/32"]
-  description       = "Allow traffic from ONS VPN"
+  from_port   = 443
+  protocol    = "tcp"
+  to_port     = 443
+  type        = "ingress"
+  cidr_blocks = ["194.34.206.36/32"]
+  description = "Allow traffic from ONS VPN"
 
   // rules associated with the security group:
   security_group_id = aws_security_group.ips_lb_sg.id
 }
 
 resource "aws_security_group_rule" "ips_lb_sg_ingress_ons_vpn4" {
-  from_port         = 443
-  protocol          = "tcp"
-  to_port           = 443
-  type              = "ingress"
-  cidr_blocks       = ["194.34.206.37/32"]
-  description       = "Allow traffic from ONS VPN"
+  from_port   = 443
+  protocol    = "tcp"
+  to_port     = 443
+  type        = "ingress"
+  cidr_blocks = ["194.34.206.37/32"]
+  description = "Allow traffic from ONS VPN"
 
   // rules associated with the security group:
   security_group_id = aws_security_group.ips_lb_sg.id
 }
 
 resource "aws_security_group_rule" "ips_lb_sg_egress_all" {
-  type                     = "egress"
-  from_port                = 0
-  protocol                 = -1
-  to_port                  = 0
+  type        = "egress"
+  from_port   = 0
+  protocol    = -1
+  to_port     = 0
   cidr_blocks = [var.cidr_block_all]
 
   security_group_id = aws_security_group.ips_lb_sg.id

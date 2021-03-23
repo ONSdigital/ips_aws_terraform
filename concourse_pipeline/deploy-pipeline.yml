@@ -16,7 +16,7 @@ resources:
     source:
       <<: *github_auth
       uri: https://github.com/ONSdigital/ips_aws_terraform.git
-      branch: main
+      branch: aws-b-migration-remove-peer
 
   - name: ips-sandbox-tf
     type: terraform
@@ -28,19 +28,28 @@ resources:
         key: ips-concourse/terraform.tfstate
         dynamodb_table: socsur-ips-aws-b-services-terraform-locks
         region: eu-west-2
-        access_key: ((aws.access_key_id))
-        secret_key: ((aws.access_key_secret))
-        role_arn: ((aws.deploy_role_sandbox))
+        access_key: ((ipssandbox.concourse_user_id))
+        secret_key: ((ipssandbox.concourse_user_secret))
+        role_arn: ((ipssandbox.deploy_role))
       env:
-        AWS_ACCESS_KEY_ID: ((aws.access_key_id))
-        AWS_SECRET_ACCESS_KEY: ((aws.access_key_secret))
+        AWS_ACCESS_KEY_ID: ((ipssandbox.concourse_user_id))
+        AWS_SECRET_ACCESS_KEY: ((ipssandbox.concourse_user_secret))
 
 jobs:
+
+  - name: ips-terraform-fmt-check
+    serial: true
+    plan:
+      - get: ips-repo
+      - task: terraform-fmt-check
+        file: ips-repo/tasks/terraform_format/task.yml
 
   - name: deploy-ips
     serial: true
     plan:
       - get: ips-repo
+        passed:
+          - ips-terraform-fmt-check
 #        trigger: true
 #        passed:
 #          - terraform-unit-tests
@@ -54,17 +63,15 @@ jobs:
 #          CONCOURSE_ACCESS_TOKEN: ((github.concourse_access_key))
       - put: ips-sandbox-tf
         params:
-          terraform_source: spp-ingest-repo/terraform/
+          terraform_source: ips-repo/terraform_infrastructure/
           vars:
-            role_arn: ((aws.deploy_role_sandbox))
+            role_arn: ((ipssandbox.deploy_role))
             environment_name: sandbox
             region: eu-west-2
-            bastion_ingress_ip:
-            deploy_key_name:
-            common_name:
-            db_name:
-            db_password:
-            db_user_name:
-            arn_certificate:
-
-
+            bastion_ingress_ip: 94.6.14.81
+            deploy_key_name: ConcDeploy
+            common_name: ips-sandbox
+            db_name: ips
+            db_password: ((ips.ips_db_password))
+            db_user_name: root
+            arn_certificate: ((ipssandbox.arn_certificate))
