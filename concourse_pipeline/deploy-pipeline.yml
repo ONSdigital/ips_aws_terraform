@@ -18,6 +18,14 @@ resources:
       uri: https://github.com/ONSdigital/ips_aws_terraform.git
       branch: aws-b-migration-remove-peer
 
+  - name: ips-service-git
+    type: git
+    icon: &git-icon github-circle
+    source:
+      <<: *github_auth
+      uri: https://github.com/ONSdigital/ips_service.git
+      branch: master
+
   - name: ips-sandbox-tf
     type: terraform
     source:
@@ -36,13 +44,6 @@ resources:
         AWS_SECRET_ACCESS_KEY: ((ipssandbox.concourse_user_secret))
 
 jobs:
-
-  # - name: ips-terraform-fmt-check
-  #   serial: true
-  #   plan:
-  #     - get: ips-repo
-  #     - task: terraform-fmt-check
-  #       file: ips-repo/tasks/terraform_format/task.yml
 
   - name: deploy-ips
     serial: true
@@ -75,3 +76,21 @@ jobs:
             db_password: ((ips.ips_db_password))
             db_user_name: root
             arn_certificate: ((ipssandbox.arn_certificate))
+
+  - name: ips-sql-schema
+    serial: true
+    plan:
+      - in_parallel:
+        - get: ips-repo
+          passed: [deploy-ips]
+        - get: ips-services-git
+        - get: ips-sandbox-tf
+          passed: [deploy-ips]
+      - task: insert-ips-sql-schema
+        file: ips-repo/tasks/sql_schema/task.yml
+        input_mapping:
+          terraform: ips-sandbox-tf
+        params:
+          AWS_ACCESS_KEY_ID: ((ipssandbox.concourse_user_id))
+          AWS_SECRET_ACCESS_KEY: ((ipssandbox.concourse_user_secret))
+          AWS_ROLE_ARN: ((ipssandbox.deploy_role))

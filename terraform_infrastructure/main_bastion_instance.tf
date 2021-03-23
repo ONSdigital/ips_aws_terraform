@@ -41,5 +41,12 @@ resource "aws_instance" "bastion" {
       "Name" = "${local.common_name_prefix}-bastion-intance"
     },
   )
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo yum -y update",
+      "sudo yum -y install mysql"
+    ]
+  }
 }
 

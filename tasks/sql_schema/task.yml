@@ -1,0 +1,16 @@
+platform: linux
+image_resource:
+  type: registry-image
+  source:
+    repository: python
+    tag: 3.8-slim
+inputs:
+  - name: ips-repo
+  - name: ips-services-git
+  - name: terraform
+run:
+  path: ips-repo/tasks/sql_schema/task.sh
+params:
+  AWS_ACCESS_KEY_ID:
+  AWS_SECRET_ACCESS_KEY:
+  AWS_ROLE_ARN:
