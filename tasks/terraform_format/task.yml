@@ -8,4 +8,4 @@ image_resource:
 inputs:
   - name: ips-repo
 run:
-  path: ./ips-repo/tasks/terraform-format/task.sh
+  path: ips-repo/tasks/terraform_format/task.sh
