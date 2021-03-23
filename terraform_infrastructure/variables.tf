@@ -51,4 +51,4 @@ variable parameter_group_name {
   default = "ips-mysql"
 }
 
-variable "role_arn" {}
+// variable "role_arn" {}

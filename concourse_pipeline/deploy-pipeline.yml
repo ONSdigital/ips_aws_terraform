@@ -37,20 +37,20 @@ resources:
 
 jobs:
 
-  - name: ips-terraform-fmt-check
-    serial: true
-    plan:
-      - get: ips-repo
-      - task: terraform-fmt-check
-        file: ips-repo/tasks/terraform_format/task.yml
+  # - name: ips-terraform-fmt-check
+  #   serial: true
+  #   plan:
+  #     - get: ips-repo
+  #     - task: terraform-fmt-check
+  #       file: ips-repo/tasks/terraform_format/task.yml
 
   - name: deploy-ips
     serial: true
     plan:
       - get: ips-repo
-        passed:
-          - ips-terraform-fmt-check
-#        trigger: true
+        # passed:
+        #   - ips-terraform-fmt-check
+        trigger: true
 #        passed:
 #          - terraform-unit-tests
 #          - test-lambda-contact-ingest
