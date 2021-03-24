@@ -23,7 +23,7 @@ resources:
     icon: &git-icon github-circle
     source:
       <<: *github_auth
-      uri: https://github.com/ONSdigital/ips_service.git
+      uri: https://github.com/ONSdigital/ips_services.git
       branch: master
 
   - name: ips-sandbox-tf
