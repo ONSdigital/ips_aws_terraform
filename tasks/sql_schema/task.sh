@@ -35,7 +35,7 @@ Host *
     StrictHostKeyChecking no
 EOL
 
-echo "mysql -h ${SQL_HOST} -u ${SQL_USER:-root} -p${SQL_PASSWORD} -D ips -e 'SHOW TABLES;" >/tmp/db_cmd.sh
+echo "mysql -h ${SQL_HOST} -u ${SQL_USER:-root} -p${SQL_PASSWORD} -D ips -e 'SHOW TABLES;'" >/tmp/db_cmd.sh
 
 TABLES=$(mssh "${BASTION_ID}" "bash -s" < /tmp/db_cmd.sh)
 
