@@ -57,12 +57,12 @@ jobs:
     serial: true
     plan:
       - in_parallel:
-        - get: ips-repo
-          trigger: true
         - get: ips-ui-git
           trigger: true
-        - task: build-ui-image
-          file: ips-repo/tasks/build_image_ui/task.yml
+        - get: ips-repo
+          trigger: true
+      - task: build-ui-image
+        file: ips-repo/tasks/build_image_ui/task.yml
         params:
           AWS_ACCESS_KEY_ID: ((ipssandbox.concourse_user_id))
           AWS_SECRET_ACCESS_KEY: ((ipssandbox.concourse_user_secret))
@@ -73,12 +73,12 @@ jobs:
     serial: true
     plan:
       - in_parallel:
-        - get: ips-repo
-          trigger: true
         - get: ips-service-git
           trigger: true
-        - task: build-service-image
-          file: ips-repo/tasks/build_image_service/task.yml
+        - get: ips-repo
+          trigger: true
+      - task: build-service-image
+        file: ips-repo/tasks/build_image_service/task.yml
         params:
           AWS_ACCESS_KEY_ID: ((ipssandbox.concourse_user_id))
           AWS_SECRET_ACCESS_KEY: ((ipssandbox.concourse_user_secret))
@@ -95,7 +95,7 @@ jobs:
           - build-service
       - put: ips-sandbox-tf
         params:
-          terraform_source: ips-repo/terraform_infrastructure/
+          terraform_source: ips-repo/infrastructure/
           vars:
             role_arn: ((ipssandbox.deploy_role))
             environment_name: sandbox
