@@ -24,7 +24,7 @@ resources:
     source:
       <<: *github_auth
       uri: https://github.com/ONSdigital/ips_services.git
-      branch: master
+      branch: develop
 
   - name: ips-ui-git
     type: git
