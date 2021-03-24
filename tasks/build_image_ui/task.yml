@@ -2,8 +2,7 @@ platform: linux
 image_resource:
   type: registry-image
   source:
-    repository: python
-    tag: 3.8-slim
+    repository: docker
 inputs:
   - name: ips-ui-git
   - name: ips-repo
