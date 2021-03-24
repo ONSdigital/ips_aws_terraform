@@ -2,14 +2,12 @@ platform: linux
 image_resource:
   type: registry-image
   source:
-    repository: karlkfi/concourse-dcind
+    repository: vito/oci-build-task
 inputs:
   - name: ips-ui-git
+    path: .
   - name: ips-repo
+outputs:
+  - name: image
 run:
-  path: ips-repo/tasks/build_image_ui/task.sh
-params:
-  AWS_ACCESS_KEY_ID:
-  AWS_SECRET_ACCESS_KEY:
-  AWS_ROLE_ARN:
-  ECR_REPO:
+  path: build

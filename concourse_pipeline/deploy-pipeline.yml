@@ -10,6 +10,16 @@ resource_types:
     tag: latest
 
 resources:
+  - name: ui-image
+    type: registry-image
+    source:
+      repository: 000704438865.dkr.ecr.eu-west-2.amazonaws.com
+      tag: latest
+      aws_access_key_id: ((ipssandbox.concourse_user_id))
+      aws_secret_access_key: ((ipssandbox.concourse_user_secret))
+      aws_region: eu-west-2
+      aws_role_arn: ((ipssandbox.deploy_role))
+
   - name: ips-repo
     type: git
     icon: &git-icon github-circle
@@ -62,12 +72,10 @@ jobs:
         - get: ips-repo
           trigger: true
       - task: build-ui-image
+        privileged: true
         file: ips-repo/tasks/build_image_ui/task.yml
-        params:
-          AWS_ACCESS_KEY_ID: ((ipssandbox.concourse_user_id))
-          AWS_SECRET_ACCESS_KEY: ((ipssandbox.concourse_user_secret))
-          AWS_ROLE_ARN: ((ipssandbox.deploy_role))
-          ECR_REPO: 000704438865.dkr.ecr.eu-west-2.amazonaws.com
+      - put: ui-image
+        params: {image: image/image.tar}
 
   - name: build-service
     serial: true
