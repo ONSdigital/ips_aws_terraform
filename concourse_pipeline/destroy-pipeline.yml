@@ -44,7 +44,7 @@ jobs:
         get_params:
           action: destroy
         params:
-          terraform_source: ips-repo/infrastructure/
+          terraform_source: ips-repo/terraform-infrastructure/
           action: destroy
           vars:
             role_arn: ((ipssandbox.deploy_role))

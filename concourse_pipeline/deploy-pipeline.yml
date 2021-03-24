@@ -95,7 +95,7 @@ jobs:
           - build-service
       - put: ips-sandbox-tf
         params:
-          terraform_source: ips-repo/infrastructure/
+          terraform_source: ips-repo/terraform-infrastructure/
           vars:
             role_arn: ((ipssandbox.deploy_role))
             environment_name: sandbox

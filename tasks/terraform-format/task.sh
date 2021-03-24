@@ -2,6 +2,6 @@
 
 set -eu
 
-cd ips-repo/infrastructure/
+cd ips-repo/terraform-infrastructure/
 
 terraform fmt -recursive -check
