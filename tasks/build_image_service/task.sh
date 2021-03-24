@@ -6,6 +6,10 @@ set -euo pipefail
 pip install awscli
 
 pip install docker
+
+apt-get update -y
+apt-get install -y jq 
+
 ## End Installs
 
 aws sts assume-role --role-arn $AWS_ROLE_ARN --role-session-name ips-concourse > /tmp/role_credentials.json
