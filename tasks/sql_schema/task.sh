@@ -46,7 +46,7 @@ if [ "${TABLES}" = "" ]; then
   rsync -a -e "mssh" "ips-service-git/db/data/ips_mysql_schema.sql" "${BASTION_ID}:/tmp/sql_schema"
   echo "mysql -h ${SQL_HOST} -u ${SQL_USER:-root} -p${SQL_PASSWORD} -D ips < /tmp/sql_schema" >/tmp/sql_dump.sh
 
-  mssh -o "${BASTION_ID}" "bash -s" < /tmp/sql_dump.sh
+  mssh "${BASTION_ID}" "bash -s" < /tmp/sql_dump.sh
 else
   echo "Not importing schema as tables already exist"
 fi
