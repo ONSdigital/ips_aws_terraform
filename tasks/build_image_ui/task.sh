@@ -8,6 +8,8 @@ apk add jq python3 py3-pip
 pip install awscli
 ## End Installs
 
+/bin/entrypoint.sh
+
 aws sts assume-role --role-arn $AWS_ROLE_ARN --role-session-name ips-concourse > /tmp/role_credentials.json
 AWS_ACCESS_KEY_ID=$(jq -r .Credentials.AccessKeyId /tmp/role_credentials.json)
 AWS_SECRET_ACCESS_KEY=$(jq -r .Credentials.SecretAccessKey /tmp/role_credentials.json)
