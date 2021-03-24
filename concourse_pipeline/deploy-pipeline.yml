@@ -32,7 +32,7 @@ resources:
     source:
       <<: *github_auth
       uri: https://github.com/ONSdigital/ips_user_interface.git
-      branch: master
+      branch: develop
 
   - name: ips-sandbox-tf
     type: terraform
@@ -85,23 +85,14 @@ jobs:
           AWS_ROLE_ARN: ((ipssandbox.deploy_role))
           ECR_REPO: 000704438865.dkr.ecr.eu-west-2.amazonaws.com
 
-  - name: deploy-ips-sandbox
+  - name: deploy-ips
     serial: true
     plan:
       - get: ips-repo
-        # passed:
-        #   - ips-terraform-fmt-check
         trigger: true
-#        passed:
-#          - terraform-unit-tests
-#          - test-lambda-contact-ingest
-#      - task: package-lambda-contact-ingest
-#        file: spp-ingest-repo/concourse_pipeline/tasks/package-lambda/task.yml
-#        output_mapping:
-#          packaged-lambda: lambda_contact_ingest_package
-#        params:
-#          LAMBDA_FUNCTION: contact_ingest
-#          CONCOURSE_ACCESS_TOKEN: ((github.concourse_access_key))
+        passed:
+          - build-ui
+          - build-service
       - put: ips-sandbox-tf
         params:
           terraform_source: ips-repo/terraform_infrastructure/

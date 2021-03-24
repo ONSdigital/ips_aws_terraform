@@ -5,7 +5,8 @@ image_resource:
     repository: python
     tag: 3.8-slim
 inputs:
-]  - name: ips-service-git
+  - name: ips-service-git
+  - name: ips-repo
 run:
   path: ips-repo/tasks/build_image_service/task.sh
 params:
