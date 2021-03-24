@@ -13,7 +13,9 @@ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/aws/aws
 pushd /tmp/aws
 {
   unzip awscliv2.zip
+  echo "attempting to install aws"
   ./aws/install
+  echo "didn't install :,("
 }
 popd
 ### END Installs
