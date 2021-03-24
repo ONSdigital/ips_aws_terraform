@@ -82,3 +82,7 @@ output "sql_password" {
 output "bastion_id" {
   value = aws_instance.bastion.id
 }
+
+output "ecr_repo" {
+  value = var.ecr_repo
+}

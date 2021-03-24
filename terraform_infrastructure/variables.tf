@@ -30,7 +30,6 @@ variable "db_user_name" {}
 variable "db_password" {}
 
 variable "ecr_repo" {
-  default = "000704438865.dkr.ecr.eu-west-2.amazonaws.com"
 }
 
 variable "ui_docker_image_tag_name" {

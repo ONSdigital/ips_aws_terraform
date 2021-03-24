@@ -1,0 +1,15 @@
+platform: linux
+image_resource:
+  type: registry-image
+  source:
+    repository: python
+    tag: 3.8-slim
+inputs:
+]  - name: ips-service-git
+run:
+  path: ips-repo/tasks/build_image_service/task.sh
+params:
+  AWS_ACCESS_KEY_ID:
+  AWS_SECRET_ACCESS_KEY:
+  AWS_ROLE_ARN:
+  ECR_REPO:
