@@ -29,7 +29,7 @@ resources:
   - name: service-image
     type: registry-image-latest
     source:
-      repository: ips-service-git
+      repository: ips-services
       tag: latest
       aws_access_key_id: ((ipssandbox.concourse_user_id))
       aws_secret_access_key: ((ipssandbox.concourse_user_secret))
