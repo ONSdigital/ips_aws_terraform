@@ -41,8 +41,12 @@ resource "aws_iam_role_policy_attachment" "ECS_full_access"{
   role       = aws_iam_role.concourse_role.name
 }
 
-resource "aws_iam_role_policy_attachment" "Ecr_full_access"{
+resource "aws_iam_role_policy_attachment" "ECR_private_full_access"{
   policy_arn = "arn:aws:iam::aws:policy/AmazonElasticContainerRegistryPublicFullAccess"
+  role       = aws_iam_role.concourse_role.name
+}
+resource "aws_iam_role_policy_attachment" "ECR_full_access"{
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess"
   role       = aws_iam_role.concourse_role.name
 }
 
