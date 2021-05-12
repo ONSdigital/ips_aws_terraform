@@ -17,8 +17,6 @@ variable "cidr_block_all" {
 variable "arn_certificate" {}
 
 # Mandataory inputs
-variable "bastion_ingress_ip" {}
-
 variable "deploy_key_name" {}
 
 variable "common_name" {}

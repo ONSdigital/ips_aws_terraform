@@ -122,14 +122,12 @@ jobs:
             role_arn: ((ipsdev.deploy_role))
             environment_name: sandbox
             region: eu-west-2
-            bastion_ingress_ip: 34.89.44.102
             deploy_key_name: ConcDeploy
             common_name: ips-sandbox
             db_name: ips
             db_password: ((ips.ips_db_password))
             db_user_name: root
-            arn_certificate: ((ipssandbox.arn_certificate))
-            ecr_repo: 000704438865.dkr.ecr.eu-west-2.amazonaws.com
+            ecr_repo: 970243148102.dkr.ecr.eu-west-2.amazonaws.com
             dns_zone_name: ons-ips-dev.uk.
 
   - name: ips-sql-schema

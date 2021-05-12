@@ -135,7 +135,7 @@ resource "aws_lb_listener" "ips_lb_listener" {
   port              = "443"
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = var.arn_certificate
+  certificate_arn   = aws_acm_certificate.ips-cert.arn
 
   default_action {
     type             = "forward"
