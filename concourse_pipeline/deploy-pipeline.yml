@@ -66,9 +66,9 @@ resources:
       env_name: sandbox
       backend_type: s3
       backend_config:
-        bucket: socsur-ips-aws-b-services-terraform-state
+        bucket: ips-terraform-state-dev
         key: ips-concourse/terraform.tfstate
-        dynamodb_table: socsur-ips-aws-b-services-terraform-locks
+        dynamodb_table: ips-terraform-locks-dev
         region: eu-west-2
         access_key: ((ipsdev.access_key_id))
         secret_key: ((ipsdev.secret_access_key))
