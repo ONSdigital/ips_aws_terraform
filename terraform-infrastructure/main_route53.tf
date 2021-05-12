@@ -1,5 +1,5 @@
 data "aws_route53_zone" "ips-private" {
-  name = var.dns_zone_name 
+  name = var.dns_zone_name
 }
 
 resource "aws_route53_record" "ips-type-A" {
@@ -31,6 +31,6 @@ resource "aws_route53_record" "ips-cert-validation" {
 resource "aws_acm_certificate_validation" "ips-cert" {
   certificate_arn = aws_acm_certificate.ips-cert.arn
   validation_record_fqdns = [
-    aws_route53_record.ips-cert-validation.fqdn,
+    aws_route53_record.ips-cert-validation.fqdn
   ]
 }
