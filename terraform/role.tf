@@ -101,7 +101,10 @@ resource "aws_iam_role_policy" "concourse_policy" {
           "ecs:DeleteCluster",
           "ecs:CreateService",
           "ecs:DescribeServices",
-          "acm:RequestCertificate"
+          "acm:RequestCertificate",
+          "acm:DescribeCertificate",
+          "acm:ListTagsForCertificate",
+          "acm:DeleteCertificate"
         ],
         "Resource": "*"
       }
