@@ -5,11 +5,13 @@ terraform.tfstate.backup
 *.tf.ignore
 *.tfvars
 *.lock.info
+terraform/.terragrunt-cache
 
 # Secrets and whatnot
 keys/
 secrets.tfvars
 aws.txt
+encrypted_secret/
 
 # IDE nonsense
 .idea
@@ -30,4 +32,3 @@ nohup.out
 *_BASE_*
 *_LOCAL_*
 *_REMOTE_*
-

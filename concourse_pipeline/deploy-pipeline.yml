@@ -2,6 +2,9 @@ github_auth: &github_auth
   username: ((github.concourse_access_key))
   password: x-oauth-basic
 
+
+# PROD:233521113492.dkr.ecr.eu-west-2.amazonaws.com
+
 resource_types:
 - name: terraform
   type: docker-image
@@ -16,7 +19,7 @@ resource_types:
     tag: latest
 
 resources:
-  - name: ui-image
+  - name: ui-image-dev
     type: registry-image-latest
     source:
       repository: ips-ui
@@ -26,7 +29,7 @@ resources:
       aws_region: eu-west-2
       aws_role_arn: ((ipsdev.deploy_role))
   
-  - name: service-image
+  - name: service-image-dev
     type: registry-image-latest
     source:
       repository: ips-services
@@ -35,6 +38,26 @@ resources:
       aws_secret_access_key: ((ipsdev.secret_access_key))
       aws_region: eu-west-2
       aws_role_arn: ((ipsdev.deploy_role))
+
+  - name: ui-image-uat
+    type: registry-image-latest
+    source:
+      repository: ips-ui
+      tag: latest
+      aws_access_key_id: ((ipsuat.access_key_id))
+      aws_secret_access_key: ((ipsuat.secret_access_key))
+      aws_region: eu-west-2
+      aws_role_arn: ((ipsuat.deploy_role))
+
+  - name: service-image-uat
+    type: registry-image-latest
+    source:
+      repository: ips-services
+      tag: latest
+      aws_access_key_id: ((ipsuat.access_key_id))
+      aws_secret_access_key: ((ipsuat.secret_access_key))
+      aws_region: eu-west-2
+      aws_role_arn: ((ipsuat.deploy_role))
 
   - name: ips-repo
     type: git
@@ -77,9 +100,63 @@ resources:
         AWS_ACCESS_KEY_ID: ((ipsdev.access_key_id))
         AWS_SECRET_ACCESS_KEY: ((ipsdev.secret_access_key))
 
+  - name: ips-uat-tf
+    type: terraform
+    source:
+      env_name: uat
+      backend_type: s3
+      backend_config:
+        bucket: ips-terraform-state-uat
+        key: ips-concourse/terraform.tfstate
+        dynamodb_table: ips-terraform-locks-uat
+        region: eu-west-2
+        access_key: ((ipsuat.access_key_id))
+        secret_key: ((ipsuat.secret_access_key))
+        role_arn: ((ipsuat.deploy_role))
+      env:
+        AWS_ACCESS_KEY_ID: ((ipsuat.access_key_id))
+        AWS_SECRET_ACCESS_KEY: ((ipsuat.secret_access_key))
+
+  - name: ui-image-prod
+    type: registry-image-latest
+    source:
+      repository: ips-ui
+      tag: latest
+      aws_access_key_id: ((ipsprod.access_key_id))
+      aws_secret_access_key: ((ipsprod.secret_access_key))
+      aws_region: eu-west-2
+      aws_role_arn: ((ipsprod.deploy_role))
+  
+  - name: service-image-prod
+    type: registry-image-latest
+    source:
+      repository: ips-services
+      tag: latest
+      aws_access_key_id: ((ipsprod.access_key_id))
+      aws_secret_access_key: ((ipsprod.secret_access_key))
+      aws_region: eu-west-2
+      aws_role_arn: ((ipsprod.deploy_role))
+
+  - name: ips-prod-tf
+    type: terraform
+    source:
+      env_name: prod
+      backend_type: s3
+      backend_config:
+        bucket: ips-terraform-state-prod
+        key: ips-concourse/terraform.tfstate
+        dynamodb_table: ips-terraform-locks-prod
+        region: eu-west-2
+        access_key: ((ipsprod.access_key_id))
+        secret_key: ((ipsprod.secret_access_key))
+        role_arn: ((ipsprod.deploy_role))
+      env:
+        AWS_ACCESS_KEY_ID: ((ipsprod.access_key_id))
+        AWS_SECRET_ACCESS_KEY: ((ipsprod.secret_access_key))
+
 jobs:
 
-  - name: build-ui
+  - name: build-ui-dev
     serial: true
     plan:
       - in_parallel:
@@ -90,10 +167,10 @@ jobs:
       - task: build-ui-image
         privileged: true
         file: ips-repo/tasks/build_image_ui/task.yml
-      - put: ui-image
+      - put: ui-image-dev
         params: {image: image/image.tar}
 
-  - name: build-service
+  - name: build-service-dev
     serial: true
     plan:
       - in_parallel:
@@ -104,17 +181,17 @@ jobs:
       - task: build-service-image
         privileged: true
         file: ips-repo/tasks/build_image_service/task.yml
-      - put: service-image
+      - put: service-image-dev
         params: {image: image/image.tar}
 
-  - name: deploy-ips
+  - name: deploy-ips-dev
     serial: true
     plan:
       - get: ips-repo
         trigger: true
         passed:
-          - build-ui
-          - build-service
+          - build-ui-dev
+          - build-service-dev
       - put: ips-sandbox-tf
         params:
           terraform_source: ips-repo/terraform-infrastructure/
@@ -130,16 +207,16 @@ jobs:
             ecr_repo: 970243148102.dkr.ecr.eu-west-2.amazonaws.com
             dns_zone_name: ons-ips-dev.uk.
 
-  - name: ips-sql-schema
+  - name: ips-sql-schema-dev
     serial: true
     plan:
       - in_parallel:
         - get: ips-repo
-          passed: [deploy-ips]
+          passed: [deploy-ips-dev]
           trigger: true
         - get: ips-service-git
         - get: ips-sandbox-tf
-          passed: [deploy-ips]
+          passed: [deploy-ips-dev]
       - task: insert-ips-sql-schema
         file: ips-repo/tasks/sql_schema/task.yml
         input_mapping:
@@ -148,3 +225,143 @@ jobs:
           AWS_ACCESS_KEY_ID: ((ipsdev.access_key_id))
           AWS_SECRET_ACCESS_KEY: ((ipsdev.secret_access_key))
           AWS_ROLE_ARN: ((ipsdev.deploy_role))
+
+  - name: build-ui-uat
+    serial: true
+    plan:
+      - in_parallel:
+        - get: ips-ui-git
+          trigger: true
+        - get: ips-repo
+          trigger: true
+      - task: build-ui-image
+        privileged: true
+        file: ips-repo/tasks/build_image_ui/task.yml
+      - put: ui-image-uat
+        params: {image: image/image.tar}
+
+  - name: build-service-uat
+    serial: true
+    plan:
+      - in_parallel:
+        - get: ips-service-git
+          trigger: true
+        - get: ips-repo
+          trigger: true
+      - task: build-service-image
+        privileged: true
+        file: ips-repo/tasks/build_image_service/task.yml
+      - put: service-image-uat
+        params: {image: image/image.tar}
+
+  - name: deploy-ips-uat
+    serial: true
+    plan:
+      - get: ips-repo
+        trigger: true
+        passed:
+          - build-ui-uat
+          - build-service-uat
+      - put: ips-uat-tf
+        params:
+          terraform_source: ips-repo/terraform-infrastructure/
+          vars:
+            role_arn: ((ipsuat.deploy_role))
+            environment_name: uat
+            region: eu-west-2
+            deploy_key_name: ConcDeploy
+            common_name: ips-uat
+            db_name: ips
+            db_password: ((ips.ips_db_password))
+            db_user_name: root
+            ecr_repo: 324163416687.dkr.ecr.eu-west-2.amazonaws.com
+            dns_zone_name: ons-ips-uat.uk.
+
+  - name: ips-sql-schema-uat
+    serial: true
+    plan:
+      - in_parallel:
+        - get: ips-repo
+          passed: [deploy-ips-uat]
+          trigger: true
+        - get: ips-service-git
+        - get: ips-uat-tf
+          passed: [deploy-ips-uat]
+      - task: insert-ips-sql-schema
+        file: ips-repo/tasks/sql_schema/task.yml
+        input_mapping:
+          terraform: ips-uat-tf
+        params:
+          AWS_ACCESS_KEY_ID: ((ipsuat.access_key_id))
+          AWS_SECRET_ACCESS_KEY: ((ipsuat.secret_access_key))
+          AWS_ROLE_ARN: ((ipsuat.deploy_role))
+
+  - name: build-ui-prod
+    serial: true
+    plan:
+      - in_parallel:
+        - get: ips-ui-git
+          trigger: true
+        - get: ips-repo
+          trigger: true
+      - task: build-ui-image
+        privileged: true
+        file: ips-repo/tasks/build_image_ui/task.yml
+      - put: ui-image-prod
+        params: {image: image/image.tar}
+
+  - name: build-service-prod
+    serial: true
+    plan:
+      - in_parallel:
+        - get: ips-service-git
+          trigger: true
+        - get: ips-repo
+          trigger: true
+      - task: build-service-image
+        privileged: true
+        file: ips-repo/tasks/build_image_service/task.yml
+      - put: service-image-prod
+        params: {image: image/image.tar}
+
+  - name: deploy-ips-prod
+    serial: true
+    plan:
+      - get: ips-repo
+        trigger: true
+        passed:
+          - build-ui-prod
+          - build-service-prod
+      - put: ips-prod-tf
+        params:
+          terraform_source: ips-repo/terraform-infrastructure/
+          vars:
+            role_arn: ((ipsuat.deploy_role))
+            environment_name: prod
+            region: eu-west-2
+            deploy_key_name: ConcDeploy
+            common_name: ips-prod
+            db_name: ips
+            db_password: ((ips.ips_db_password))
+            db_user_name: root
+            ecr_repo: 233521113492.dkr.ecr.eu-west-2.amazonaws.com
+            dns_zone_name: ons-ips-prod.uk.
+
+  - name: ips-sql-schema-prod
+    serial: true
+    plan:
+      - in_parallel:
+        - get: ips-repo
+          passed: [deploy-ips-prod]
+          trigger: true
+        - get: ips-service-git
+        - get: ips-prod-tf
+          passed: [deploy-ips-prod]
+      - task: insert-ips-sql-schema
+        file: ips-repo/tasks/sql_schema/task.yml
+        input_mapping:
+          terraform: ips-prod-tf
+        params:
+          AWS_ACCESS_KEY_ID: ((ipsprod.access_key_id))
+          AWS_SECRET_ACCESS_KEY: ((ipsprod.secret_access_key))
+          AWS_ROLE_ARN: ((ipsprod.deploy_role))
