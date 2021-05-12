@@ -32,6 +32,9 @@ variable "db_password" {}
 variable "ecr_repo" {
 }
 
+variable "dns_zone_name" {
+}
+
 variable "ui_docker_image_tag_name" {
   default = "latest"
 }

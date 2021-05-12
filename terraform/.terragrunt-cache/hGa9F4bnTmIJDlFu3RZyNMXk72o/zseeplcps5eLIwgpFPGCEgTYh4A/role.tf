@@ -26,6 +26,30 @@ resource "aws_iam_role_policy_attachment" "s3_full_access" {
   role       = aws_iam_role.concourse_role.name
 }
 
+resource "aws_iam_role_policy_attachment" "dynamoDB_full_access" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
+  role       = aws_iam_role.concourse_role.name
+}
+
+resource "aws_iam_role_policy_attachment" "RDS_full_access"{
+  policy_arn = "arn:aws:iam::aws:policy/AmazonRDSFullAccess"
+  role       = aws_iam_role.concourse_role.name
+}
+
+resource "aws_iam_role_policy_attachment" "ECS_full_access"{
+  policy_arn = "arn:aws:iam::aws:policy/AmazonECS_FullAccess"
+  role       = aws_iam_role.concourse_role.name
+}
+
+resource "aws_iam_role_policy_attachment" "ECR_private_full_access"{
+  policy_arn = "arn:aws:iam::aws:policy/AmazonElasticContainerRegistryPublicFullAccess"
+  role       = aws_iam_role.concourse_role.name
+}
+resource "aws_iam_role_policy_attachment" "ECR_full_access"{
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess"
+  role       = aws_iam_role.concourse_role.name
+}
+
 resource "aws_iam_role_policy" "concourse_policy" {
   name = "ips-concourse-policy"
   role = aws_iam_role.concourse_role.id
@@ -61,7 +85,22 @@ resource "aws_iam_role_policy" "concourse_policy" {
           "logs:CreateLogGroup",
           "logs:PutLogEvents",
           "ec2:CreateNetworkInterface",
-          "ec2:AttachNetworkInterface"
+          "ec2:AttachNetworkInterface",
+          "route53:ListHostedZones",
+          "route53:GetHostedZone",
+          "route53:ListTagsForResource",
+          "ecs:CreateCluster",
+          "ecs:RegisterTaskDefinition",
+          "ecs:RegisterTaskDefinition",
+          "route53:ChangeResourceRecordSets",
+          "ecs:DescribeClusters",
+          "ecs:DescribeTaskDefinition",
+          "route53:GetChange",
+          "route53:ListResourceRecordSets",
+          "ecs:DeregisterTaskDefinition",
+          "ecs:DeleteCluster",
+          "ecs:CreateService",
+          "ecs:DescribeServices"
         ],
         "Resource": "*"
       }
