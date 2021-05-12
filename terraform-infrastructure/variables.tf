@@ -14,8 +14,6 @@ variable "cidr_block_all" {
   default = "0.0.0.0/0"
 }
 
-variable "arn_certificate" {}
-
 # Mandataory inputs
 variable "deploy_key_name" {}
 
