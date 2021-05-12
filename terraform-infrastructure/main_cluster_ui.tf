@@ -9,8 +9,8 @@ resource "aws_ecs_task_definition" "ui_task_def" {
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = "2048"
-  task_role_arn            = data.aws_iam_role.ecsTaskExecutionRole.arn
-  execution_role_arn       = data.aws_iam_role.ecsTaskExecutionRole.arn
+  task_role_arn            = var.role_arn
+  execution_role_arn       = var.role_arn
   container_definitions = templatefile("${path.module}/ui-task-def.json",
     {
       services_alb_dns = aws_lb.ips_services_internal_facing_lb.dns_name,

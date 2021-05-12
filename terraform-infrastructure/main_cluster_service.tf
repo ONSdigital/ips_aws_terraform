@@ -9,8 +9,8 @@ resource "aws_ecs_task_definition" "ips_servs_task_def" {
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = "4096"
-  task_role_arn            = data.aws_iam_role.ecsTaskExecutionRole.arn
-  execution_role_arn       = data.aws_iam_role.ecsTaskExecutionRole.arn
+  task_role_arn            = var.role_arn
+  execution_role_arn       = var.role_arn
   container_definitions = templatefile("${path.module}/service-task-def.json",
     {
       db_name        = var.db_name,
