@@ -15,8 +15,6 @@ variable "cidr_block_all" {
 }
 
 # Mandataory inputs
-variable "deploy_key_name" {}
-
 variable "common_name" {}
 
 variable "db_name" {}

@@ -28,7 +28,7 @@ resources:
       aws_secret_access_key: ((ipsdev.secret_access_key))
       aws_region: eu-west-2
       aws_role_arn: ((ipsdev.deploy_role))
-  
+
   - name: service-image-dev
     type: registry-image-latest
     source:
@@ -126,7 +126,7 @@ resources:
       aws_secret_access_key: ((ipsprod.secret_access_key))
       aws_region: eu-west-2
       aws_role_arn: ((ipsprod.deploy_role))
-  
+
   - name: service-image-prod
     type: registry-image-latest
     source:
@@ -199,7 +199,6 @@ jobs:
             role_arn: ((ipsdev.deploy_role))
             environment_name: sandbox
             region: eu-west-2
-            deploy_key_name: ConcDeploy
             common_name: ips-sandbox
             db_name: ips
             db_password: ((ips.ips_db_password))
@@ -273,7 +272,6 @@ jobs:
             role_arn: ((ipsuat.deploy_role))
             environment_name: uat
             region: eu-west-2
-            deploy_key_name: ConcDeploy
             common_name: ips-uat
             db_name: ips
             db_password: ((ips.ips_db_password))
@@ -347,7 +345,6 @@ jobs:
             role_arn: ((ipsuat.deploy_role))
             environment_name: prod
             region: eu-west-2
-            deploy_key_name: ConcDeploy
             common_name: ips-prod
             db_name: ips
             db_password: ((ips.ips_db_password))

@@ -89,7 +89,7 @@ resource "aws_security_group" "natsg" {
 resource "aws_instance" "nat" {
   ami                         = data.aws_ami.al2_ami.id
   instance_type               = "t2.micro"
-  key_name                    = var.deploy_key_name
+  key_name                    = aws_key_pair.nat.key_name
   associate_public_ip_address = true
   source_dest_check           = false
 
@@ -128,4 +128,14 @@ data "aws_ami" "al2_ami" {
     name   = "architecture"
     values = ["x86_64"]
   }
+}
+
+resource "tls_private_key" "nat" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+resource "aws_key_pair" "nat" {
+  key_name   = "nat-key"
+  public_key = tls_private_key.nat.public_key_openssh
 }

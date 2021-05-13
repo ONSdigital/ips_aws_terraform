@@ -51,7 +51,6 @@ jobs:
             environment_name: sandbox
             region: eu-west-2
             bastion_ingress_ip: 94.6.14.81
-            deploy_key_name: ConcDeploy
             common_name: ips-sandbox
             db_name: ips
             db_password: ((ips.ips_db_password))

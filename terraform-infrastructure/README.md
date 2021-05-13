@@ -5,7 +5,6 @@ When invoking `terraform apply` the following params needs to be passed in:
 
 ```
 variable "bastion_ingress_ip" {}
-variable "deploy_key_name" {}
 variable "common_name" {}
 ```
 
@@ -21,12 +20,11 @@ vars that contains sensitive information to the .tfvars file so that they do not
 ```
 terraform plan \
     -var "bastion_ingress_ip=$(curl --silent  ifconfig.co)" \
-    -var "deploy_key_name=ConcDeploy"  \
     -var "common_name=ips-prod"   \
-    -var "peered_vpc_name=ips-prod-test-db" \     
-    -var "db_name=<REDACTED>"  \    
-    -var "db_password=<REDACTED>" \    
-    -var "db_server=<REDACTED>"  \    
+    -var "peered_vpc_name=ips-prod-test-db" \
+    -var "db_name=<REDACTED>"  \
+    -var "db_password=<REDACTED>" \
+    -var "db_server=<REDACTED>"  \
     -var "db_user_name=<REDACTED>"   \
-    -var-file=$HOME/.aws/tf-creds.tfvars 
+    -var-file=$HOME/.aws/tf-creds.tfvars
 ```

@@ -86,3 +86,19 @@ output "bastion_id" {
 output "ecr_repo" {
   value = var.ecr_repo
 }
+
+output "bastion_ssh_public_key" {
+  value = tls_private_key.bastion.public_key_openssh
+}
+
+output "bastion_ssh_private_key" {
+  value = tls_private_key.bastion.private_key_pem
+}
+
+output "nat_ssh_public_key" {
+  value = tls_private_key.nat.public_key_openssh
+}
+
+output "nat_ssh_private_key" {
+  value = tls_private_key.nat.private_key_pem
+}
