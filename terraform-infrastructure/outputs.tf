@@ -76,7 +76,8 @@ output "sql_host" {
 }
 
 output "sql_password" {
-  value = aws_db_instance.default.password
+  value     = aws_db_instance.default.password
+  sensitive = true
 }
 
 output "bastion_id" {
@@ -92,7 +93,8 @@ output "bastion_ssh_public_key" {
 }
 
 output "bastion_ssh_private_key" {
-  value = tls_private_key.bastion.private_key_pem
+  value     = tls_private_key.bastion.private_key_pem
+  sensitive = true
 }
 
 output "nat_ssh_public_key" {
@@ -100,5 +102,6 @@ output "nat_ssh_public_key" {
 }
 
 output "nat_ssh_private_key" {
-  value = tls_private_key.nat.private_key_pem
+  value     = tls_private_key.nat.private_key_pem
+  sensitive = true
 }
