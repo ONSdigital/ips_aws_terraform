@@ -50,6 +50,11 @@ resource "aws_iam_role_policy_attachment" "ECR_full_access" {
   role       = aws_iam_role.concourse_role.name
 }
 
+resource "aws_iam_role_policy_attachment" "ECS_Task_Execution"{
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+  role       = aws_iam_role.concourse_role.name
+}
+
 resource "aws_iam_role_policy" "concourse_policy" {
   name = "ips-concourse-policy"
   role = aws_iam_role.concourse_role.id

@@ -342,7 +342,7 @@ jobs:
         params:
           terraform_source: ips-repo/terraform-infrastructure/
           vars:
-            role_arn: ((ipsuat.deploy_role))
+            role_arn: ((ipsprod.deploy_role))
             environment_name: prod
             region: eu-west-2
             common_name: ips-prod
