@@ -111,9 +111,9 @@ output "ecs_cluster_name" {
 }
 
 output "task_definition_ui" {
-  value = aws_ecs_task_definition.ui_task_def.arn
+  value = aws_ecs_task_definition.ui_task_def.family
 }
 
 output "task_definition_services" {
-  value = aws_ecs_task_definition.ips_servs_task_def.arn
+  value = aws_ecs_task_definition.ips_servs_task_def.family
 }

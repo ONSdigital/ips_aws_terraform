@@ -269,6 +269,7 @@ jobs:
         - get: ips-repo
           trigger: true
           passed:
+            - ips-stop-ecs-task-dev
             - ips-sql-schema-dev
       - task: build-service-image
         privileged: true
