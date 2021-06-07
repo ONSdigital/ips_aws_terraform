@@ -18,9 +18,9 @@ pushd /tmp/aws
 popd
 ### END Installs
 
-ECS_CLUSTER_NAME=$(jq -r '.sql_host' < terraform/metadata)
-TASK_DEFINITON_UI=$(jq -r '.sql_password' < terraform/metadata)
-TASK_DEFINITON_SERVICES=$(jq -r '.bastion_id' < terraform/metadata)
+ECS_CLUSTER_NAME=$(jq -r '.ecs_cluster_name' < terraform/metadata)
+TASK_DEFINITON_UI=$(jq -r '.task_definition_ui' < terraform/metadata)
+TASK_DEFINITON_SERVICES=$(jq -r '.task_definition_services' < terraform/metadata)
 
 # Log into AWS
 aws sts assume-role --role-arn $AWS_ROLE_ARN --role-session-name ips-concourse > /tmp/role_credentials.json
