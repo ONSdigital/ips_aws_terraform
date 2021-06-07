@@ -1,0 +1,15 @@
+platform: linux
+image_resource:
+  type: registry-image
+  source:
+    repository: python
+    tag: 3.8-slim
+inputs:
+  - name: ips-repo
+  - name: terraform
+run:
+  path: ips-repo/tasks/stop_ecs_task/task.sh
+params:
+  AWS_ACCESS_KEY_ID:
+  AWS_SECRET_ACCESS_KEY:
+  AWS_ROLE_ARN:

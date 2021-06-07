@@ -105,3 +105,15 @@ output "nat_ssh_private_key" {
   value     = tls_private_key.nat.private_key_pem
   sensitive = true
 }
+
+output "ecs_cluster_name" {
+  value = aws_ecs_cluster.ips_cluster.name
+}
+
+output "task_definition_ui" {
+  value = aws_ecs_task_definition.ui_task_def.arn
+}
+
+output "task_definition_services" {
+  value = aws_ecs_task_definition.ips_servs_task_def.arn
+}

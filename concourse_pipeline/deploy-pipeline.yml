@@ -206,6 +206,24 @@ jobs:
             ecr_repo: 970243148102.dkr.ecr.eu-west-2.amazonaws.com
             dns_zone_name: ons-ips-dev.uk.
 
+  - name: ips-stop-ecs-task-dev
+    serial: true
+    plan:
+      - in_parallel:
+        - get: ips-repo
+          passed: [deploy-ips-dev]
+          trigger: true
+        - get: ips-sandbox-tf
+          passed: [deploy-ips-dev]
+      - task: stop-ecs-tasks
+        file: ips-repo/tasks/stop_ecs_task/task.yml
+        input_mapping:
+          terraform: ips-sandbox-tf
+        params:
+          AWS_ACCESS_KEY_ID: ((ipsdev.access_key_id))
+          AWS_SECRET_ACCESS_KEY: ((ipsdev.secret_access_key))
+          AWS_ROLE_ARN: ((ipsdev.deploy_role))
+
   - name: ips-sql-schema-dev
     serial: true
     plan:
@@ -234,6 +252,7 @@ jobs:
         - get: ips-repo
           trigger: true
           passed:
+            - ips-stop-ecs-task-dev
             - ips-sql-schema-dev
       - task: build-ui-image
         privileged: true
